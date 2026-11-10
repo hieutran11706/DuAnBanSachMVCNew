@@ -1,0 +1,129 @@
+﻿@model IEnumerable<DuAnBanSachMVC.Models.Tac_Gia>
+
+@{
+    ViewBag.Title = "Quản lý Tác Giả";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    /* Khung Card bọc bảng */
+    .content-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+        padding: 25px;
+    }
+
+    /* Nút thêm mới tác giả */
+    .btn-add-new {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-weight: 500;
+        transition: background 0.2s;
+        text-decoration: none;
+    }
+
+        .btn-add-new:hover {
+            background-color: var(--primary-hover) !important;
+            color: #fff !important;
+        }
+
+    /* Định dạng bảng dữ liệu */
+    .table-custom thead {
+        background-color: var(--bg-light);
+        color: var(--primary-color);
+    }
+
+    .table-custom th {
+        font-weight: 600;
+        border: none;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-@TempData["AlertType"] alert-dismissible fade show d-flex align-items-center" role="alert" style="border-radius: 8px; margin-bottom: 20px;">
+            <i class="fa-solid @(TempData["AlertType"].ToString() == "success" ? "fa-circle-check" : "fa-circle-exclamation") mr-2" style="font-size: 20px;"></i>
+            <div>@TempData["AlertMessage"]</div>
+            
+        </div>
+    }
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="page-title m-0">QUẢN LÝ DANH SÁCH TÁC GIẢ</h2>
+        <a href="@Url.Action("Create")" class="btn btn-add-new">
+            <i class="fa-solid fa-plus me-1"></i> Thêm tác giả mới
+        </a>
+    </div>
+
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-custom align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Họ và Tên Tác Giả</th>
+                        <th style="width: 55%;">Tiểu Sử tóm tắt</th>
+                        <th style="width: 20%;" class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="font-weight-bold text-gray-800 align-middle">
+                                @Html.DisplayFor(modelItem => item.Ten_Tac_Gia)
+                            </td>
+                            <td class="text-secondary align-middle text-justify">
+                                @if (string.IsNullOrEmpty(item.Tieu_Su))
+                                {
+                                    <span class="text-muted font-italic">Chưa cập nhật tiểu sử.</span>
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.Tieu_Su)
+                                }
+                            </td>
+                            <td class="text-center align-middle">
+                                <div class="btn-group" role="group">
+                                    <a href="@Url.Action("Edit", new { id = item.Ma_Tac_Gia })" class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                        <i class="fas fa-edit"></i> <span class="d-none d-sm-inline ml-1">Edit</span>
+                                    </a>
+
+                                    <a href="@Url.Action("Details", new { id = item.Ma_Tac_Gia })" class="btn btn-sm btn-outline-info mx-1" title="Xem chi tiết">
+                                        <i class="fas fa-info-circle"></i> <span class="d-none d-sm-inline ml-1">Details</span>
+                                    </a>
+
+                                    <a href="@Url.Action("Delete", new { id = item.Ma_Tac_Gia })" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                        <i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline ml-1">Delete</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

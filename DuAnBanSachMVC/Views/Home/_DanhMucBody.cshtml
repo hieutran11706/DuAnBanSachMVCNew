@@ -1,0 +1,21 @@
+﻿@using DuAnBanSachMVC.Models
+@model List<Sach>
+<main>
+    <div class="container">
+        <h2>@ViewBag.TieuDeDanhMuc</h2>
+
+        @if (Model == null || !Model.Any())
+        {
+            <p style="padding: 30px 0; color:#777;">Hiện chưa có sách nào trong mục này.</p>
+        }
+        else
+        {
+            <ul class="books-list">
+                @foreach (var sach in Model)
+                {
+                    @Html.Partial("_GridBookCard", sach)
+                }
+            </ul>
+        }
+    </div>
+</main>

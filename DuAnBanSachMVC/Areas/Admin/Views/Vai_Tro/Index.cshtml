@@ -1,0 +1,102 @@
+﻿@model IEnumerable<DuAnBanSachMVC.Models.Vai_Tro>
+
+@{
+    ViewBag.Title = "Quản Lý Vai Trò";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .btn-add-new {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+        border-radius: 20px;
+        padding: 6px 18px;
+        border: none;
+    }
+
+        .btn-add-new:hover {
+            background-color: var(--primary-hover) !important;
+        }
+    /* Badge hiển thị mã vai trò trông chuyên nghiệp hơn */
+    .badge-role {
+        background-color: #E6F2F0;
+        color: var(--primary-color);
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-family: 'Courier New', Courier, monospace; /* Kiểu chữ code nhìn cá tính */
+    }
+</style>
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title m-0">Quản Lý Vai Trò</h2>
+            <p class="text-muted m-0 mt-1 small">Thiết lập các quyền hạn truy cập trong hệ thống.</p>
+        </div>
+        <a href="@Url.Action("Create")" class="btn btn-add-new shadow-sm">
+            <i class="fas fa-plus fa-sm mr-1"></i> Thêm vai trò mới
+        </a>
+    </div>
+
+    <div class="card card-custom mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover text-dark align-middle" id="dataTable" width="100%">
+                    <thead style="background-color: var(--bg-light); color: var(--primary-color);">
+                        <tr>
+                            <th style="width: 25%;">Mã Vai Trò</th>
+                            <th style="width: 45%;">Tên Vai Trò (Hiển thị)</th>
+                            <th style="width: 30%;" class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="align-middle">
+                                    <!-- Mã vai trò được bọc trong badge màu xanh ngọc nhạt nhìn rất sạch sẽ -->
+                                    <span class="badge-role">@item.Ma_Vai_Tro</span>
+                                </td>
+                                <td class="font-weight-bold text-gray-800 align-middle">
+                                    @item.Ten_Vai_Tro
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Edit", new { id = item.Ma_Vai_Tro })" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-edit"></i> Sửa
+                                        </a>
+                                        <a href="@Url.Action("Delete", new { id = item.Ma_Vai_Tro })" class="btn btn-sm btn-outline-danger ml-1">
+                                            <i class="fas fa-trash-alt"></i> Xóa
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

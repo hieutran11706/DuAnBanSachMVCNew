@@ -1,0 +1,480 @@
+﻿@model Sach
+@{
+    ViewBag.Title = Model.Ten_Sach;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Sach> sachLienQuan = ViewBag.SachLienQuan;
+    List<Danh_Gia> danhGia = ViewBag.DanhSachDanhGia;
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/Content/Detail.css" />
+    <style>
+        /* Đồng bộ phong cách thiết kế Vintage Bookora */
+        .product-detail-main {
+            background: #F6F1E4;
+            color: #1C2B45;
+            font-family: 'Manrope', sans-serif;
+            min-height: calc(100vh - 120px);
+            padding: 40px 16px;
+            box-sizing: border-box;
+        }
+
+        .detail-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Khối thông tin chi tiết chính (Bố cục chia 2 cột hình và chữ) */
+        .book-essential {
+            display: flex;
+            gap: 50px;
+            background: #FFFDF8;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(28,43,69,.04);
+            border: 1px solid #EDE5CF;
+            margin-bottom: 40px;
+            align-items: flex-start;
+        }
+
+        /* Cột ảnh bìa sách */
+        .book-image-panel {
+            width: 340px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .book-image-panel .img-holder {
+            width: 100%;
+            max-width: 320px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            border: 1px solid #EDE5CF;
+            background-color: #F6F1E4;
+            aspect-ratio: 3/4;
+        }
+        .book-image-panel img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Cột nội dung chi tiết */
+        .book-info-panel {
+            flex: 1;
+        }
+        .book-info-panel h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin: 0 0 16px 0;
+            line-height: 1.25;
+            color: #1C2B45;
+        }
+
+        /* Đánh giá sao & Giá cả */
+        .rating-summary {
+            font-size: 0.95rem;
+            color: #6b7488;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rating-summary span.stars { color: #D4AF37; font-size: 1.1rem; }
+
+        .price-tag {
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #7B2635;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px dashed #E4DCC5;
+        }
+
+        /* Cấu trúc danh sách thuộc tính - Đã sửa lỗi đè chữ */
+        .specs-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 30px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+
+            .specs-list li {
+                display: flex;
+                align-items: center;
+                color: #6b7488;
+                border-bottom: 1px dashed #EDE5CF;
+                padding-bottom: 8px;
+            }
+
+                .specs-list li b {
+                    color: #1C2B45;
+                    font-weight: 600;
+                    width: 140px; /* Cố định độ rộng của nhãn tiêu đề để phần nội dung thẳng hàng */
+                    flex-shrink: 0;
+                }
+
+                .specs-list li span {
+                    color: #4A5568;
+                }
+
+        /* Khối mô tả sản phẩm */
+        .product-description {
+            margin-bottom: 32px;
+        }
+        .product-description h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            color: #1C2B45;
+        }
+        .product-description p {
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: #4A5568;
+            margin: 0;
+            text-align: justify;
+        }
+
+        /* Nút tùy chỉnh số lượng & Các nút hành động mua hàng */
+        .purchase-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .quantity-spinner {
+            display: inline-flex;
+            align-items: center;
+            border: 1.5px solid #E4DCC5;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #FFFDF8;
+        }
+        .quantity-spinner button {
+            background: none;
+            border: none;
+            width: 36px;
+            height: 44px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #1C2B45;
+            transition: 0.2s;
+        }
+        .quantity-spinner button:hover { background-color: #F6F1E4; color: #7B2635; }
+        .quantity-spinner input {
+            width: 50px;
+            height: 44px;
+            border: none;
+            border-left: 1.5px solid #E4DCC5;
+            border-right: 1.5px solid #E4DCC5;
+            text-align: center;
+            font-family: 'Manrope';
+            font-weight: 700;
+            font-size: 1rem;
+            outline: none;
+            background: #FFFDF8;
+            color: #1C2B45;
+            -moz-appearance: textfield;
+        }
+        .quantity-spinner input::-webkit-outer-spin-button,
+        .quantity-spinner input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .btn-cart, .btn-buy {
+            font-family: 'Manrope', sans-serif;
+            height: 44px;
+            padding: 0 28px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-cart {
+            background: #FFFDF8;
+            color: #7B2635;
+            border: 2px solid #7B2635;
+        }
+        .btn-cart:hover:not([disabled]) { background: #7B2635; color: #FFFDF8; }
+
+        .btn-buy {
+            background: #7B2635;
+            color: #FFFDF8;
+            box-shadow: 0 4px 12px rgba(123, 38, 53, 0.15);
+        }
+        .btn-buy:hover { background: #611D29; transform: translateY(-1px); }
+
+        .btn-cart[disabled] {
+            border-color: #E4DCC5;
+            color: #A0AEC0;
+            background: #EDF2F7;
+            cursor: not-allowed;
+        }
+
+        /* Khu vực Đánh giá & Sản phẩm liên quan */
+        .extra-section {
+            background: #FFFDF8;
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 10px 30px rgba(28,43,69,.04);
+            border: 1px solid #EDE5CF;
+            margin-bottom: 40px;
+        }
+        .extra-section h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 0 0 24px 0;
+            color: #1C2B45;
+            border-bottom: 2px solid #EDE5CF;
+            padding-bottom: 12px;
+        }
+
+        /* Danh sách Đánh giá */
+        .review-card {
+            padding: 20px 0;
+            border-bottom: 1px solid #EDE5CF;
+        }
+        .review-card:last-child { border-bottom: none; padding-bottom: 0; }
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .review-user { font-weight: 700; color: #1C2B45; font-size: 0.95rem; }
+        .review-stars { color: #D4AF37; letter-spacing: 2px; }
+        .review-content { margin: 0; color: #4A5568; font-size: 0.95rem; line-height: 1.5; }
+
+        /* Bố cục sản phẩm liên quan slider/grid */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 24px;
+        }
+        .related-card {
+            background: #FFFDF8;
+            border: 1px solid #EDE5CF;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .related-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(28,43,69,0.06);
+            border-color: #7B2635;
+        }
+        .related-card a { text-decoration: none; color: inherit; }
+        .related-img-box {
+            width: 100%;
+            aspect-ratio: 3/4;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            border: 1px solid #EDE5CF;
+            background: #F6F1E4;
+        }
+        .related-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        .related-title {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #1C2B45;
+            margin: 0 0 12px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 2.6em;
+            line-height: 1.3;
+        }
+        .related-card button {
+            width: 100%;
+            background: #F6F1E4;
+            color: #7B2635;
+            border: 1.5px solid #7B2635;
+            padding: 8px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .related-card button:hover { background: #7B2635; color: #FFFDF8; }
+
+        /* Điện thoại */
+        @@media (max-width: 768px) {
+            .book-essential { flex-direction: column; padding: 24px; gap: 30px; }
+            .book-image-panel { width: 100%; }
+            .specs-list { grid-template-columns: 1fr; gap: 12px; }
+            .specs-list li { width: 100%; }
+            .purchase-actions { flex-direction: column; align-items: stretch; }
+            .quantity-spinner { justify-content: center; }
+        }
+    </style>
+}
+
+<main class="product-detail-main">
+    <div class="detail-container">
+        <!-- Khu vực thông tin chi tiết sản phẩm chính -->
+        <div class="book-essential">
+            <!-- Cột trái: Ảnh bìa sách -->
+            <div class="book-image-panel">
+                <div class="img-holder">
+                    <img src="@(string.IsNullOrEmpty(Model.Anh_Bia_Url) ? "https://via.placeholder.com/300x400?text=No+Image" : Model.Anh_Bia_Url)" alt="@Model.Ten_Sach">
+                </div>
+            </div>
+
+            <!-- Cột phải: Thông tin chi tiết thuộc tính -->
+            <div class="book-info-panel">
+                <h2>@Model.Ten_Sach</h2>
+
+                @if ((int)ViewBag.SoDanhGia > 0)
+                {
+                    <div class="rating-summary">
+                        <span class="stars">★</span>
+                        <strong>@ViewBag.DiemTrungBinh / 5</strong>
+                        <span>(@ViewBag.SoDanhGia đánh giá)</span>
+                    </div>
+                }
+
+                <div class="price-tag">@Model.Gia_Ban.DinhDangTien()</div>
+
+                <ul class="specs-list">
+                    <li><b>Tác giả:</b> <span>@(Model.Tac_Gia != null ? Model.Tac_Gia.Ten_Tac_Gia : "Đang cập nhật")</span></li>
+                    <li><b>Thể loại:</b> <span>@(Model.The_Loai != null ? Model.The_Loai.Ten_The_Loai : "Đang cập nhật")</span></li>
+                    <li><b>Nhà xuất bản:</b> <span>@(Model.Nha_Xuat_Ban ?? "Đang cập nhật")</span></li>
+                    <li><b>Ngày xuất bản:</b> <span>@(Model.Ngay_Xuat_Ban.HasValue ? Model.Ngay_Xuat_Ban.Value.ToString("dd/MM/yyyy") : "Đang cập nhật")</span></li>
+                    <li style="grid-column: span 2; width: 100%;"><b>Tình trạng kho:</b> <span style="font-weight: 600; color: @(Model.So_Luong_Ton > 0 ? "#2F855A" : "#B3261E")">@(Model.So_Luong_Ton > 0 ? "Còn " + Model.So_Luong_Ton + " cuốn trong kho" : "Tạm hết hàng")</span></li>
+                </ul>
+
+                <div class="product-description">
+                    <h3>Mô tả sản phẩm</h3>
+                    <p>@Model.Mo_Ta</p>
+                </div>
+
+                <!-- Các Form nghiệp vụ mua bán hàng hóa -->
+                @if (Model.So_Luong_Ton > 0)
+                {
+                    <div class="purchase-actions">
+                        @using (Html.BeginForm("ThemVaoGioHang", "Home", FormMethod.Post, new { id = "formAddToCart", style = "display:inline-flex; gap:12px; align-items:center;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="maSach" value="@Model.Ma_Sach" />
+
+                            <div class="quantity-spinner">
+                                <button type="button" onclick="thayDoiSoLuong(-1)">-</button>
+                                <input type="number" id="txtSoLuong" name="soLuong" value="1" min="1" max="@Model.So_Luong_Ton" onchange="kiemTraGioiHan(this)" />
+                                <button type="button" onclick="thayDoiSoLuong(1)">+</button>
+                            </div>
+
+                            <button type="submit" class="btn-cart">🛒 Thêm vào giỏ</button>
+                        }
+
+                        @using (Html.BeginForm("MuaNgay", "Home", FormMethod.Post, new { id = "formBuyNow", style = "display:inline;" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="maSach" value="@Model.Ma_Sach" />
+                            <input type="hidden" id="hidBuyNowQty" name="soLuong" value="1" />
+                            <button type="submit" class="btn-buy" onclick="dongBoSoLuongMuaNgay()">Mua ngay</button>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="purchase-actions">
+                        <button class="btn-cart" disabled>Tạm hết hàng</button>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Khối đánh giá khách hàng phản hồi -->
+        @if (danhGia != null && danhGia.Any())
+        {
+            <div class="extra-section">
+                <h3>Đánh giá từ khách hàng</h3>
+                @foreach (var dg in danhGia)
+                {
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="review-user">@(dg.Chi_Tiet_Don_Hang?.Don_Hang?.Khach_Hang?.Ho_Ten ?? "Khách hàng Bookora")</span>
+                            <span class="review-stars">@(new string('★', dg.So_Sao))@(new string('☆', 5 - dg.So_Sao))</span>
+                        </div>
+                        <p class="review-content">@dg.Binh_luan</p>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Khối sản phẩm cùng loại gợi ý -->
+        @if (sachLienQuan != null && sachLienQuan.Any())
+        {
+            <div class="extra-section">
+                <h3>Sách cùng thể loại</h3>
+                <div class="related-grid">
+                    @foreach (var sach in sachLienQuan)
+                    {
+                        <div class="related-card">
+                            <a href="/Home/Detail/@sach.Ma_Sach">
+                                <div class="related-img-box">
+                                    <img src="@(string.IsNullOrEmpty(sach.Anh_Bia_Url) ? "https://via.placeholder.com/180x240?text=No+Image" : sach.Anh_Bia_Url)" alt="@sach.Ten_Sach">
+                                </div>
+                                <h4 class="related-title">@sach.Ten_Sach</h4>
+                            </a>
+                            <a href="/Home/Detail/@sach.Ma_Sach" style="text-decoration: none;">
+                                <button type="button">Chi tiết</button>
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</main>
+
+<script>function thayDoiSoLuong(delta) {
+        var input = document.getElementById('txtSoLuong');
+        var gtri = parseInt(input.value || '1', 10) + delta;
+        var max = parseInt(input.max || '999', 10);
+        if (gtri < 1) gtri = 1;
+        if (gtri > max) gtri = max;
+        input.value = gtri;
+        dongBoSoLuongMuaNgay();
+    }
+
+    function kiemTraGioiHan(input) {
+        var gtri = parseInt(input.value, 10);
+        var max = parseInt(input.max, 10);
+        if (isNaN(gtri) || gtri < 1) input.value = 1;
+        if (gtri > max) input.value = max;
+        dongBoSoLuongMuaNgay();
+    }
+
+    function dongBoSoLuongMuaNgay() {
+        var inputQty = document.getElementById('txtSoLuong');
+        var hidQty = document.getElementById('hidBuyNowQty');
+        if(inputQty && hidQty) {
+            hidQty.value = inputQty.value;
+        }
+    }</script></main>

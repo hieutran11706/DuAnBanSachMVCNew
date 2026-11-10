@@ -1,0 +1,227 @@
+﻿@model DuAnBanSachMVC.Models.Phieu_Giam_Gia
+
+@{
+    ViewBag.Title = "Tạo Phiếu Giảm Giá";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    /* Khung bọc form */
+    .form-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+        padding: 30px;
+        max-width: 850px;
+    }
+
+    .form-label-custom {
+        font-weight: 600;
+        color: #2F3E46;
+        margin-bottom: 6px;
+    }
+
+    /* Custom input ô nhập liệu và dropdown */
+    .input-custom {
+        border: 1.5px solid #E0E7E5 !important;
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
+        height: auto !important;
+        transition: all 0.2s;
+    }
+
+        .input-custom:focus {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 0.2rem rgba(95, 159, 144, 0.15) !important;
+        }
+
+    /* Nút lưu dữ liệu */
+    .btn-submit-custom {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 20px !important;
+        padding: 10px 25px !important;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+
+        .btn-submit-custom:hover {
+            background-color: var(--primary-hover) !important;
+        }
+
+    /* Nút quay lại */
+    .btn-back {
+        color: #666 !important;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: color 0.2s;
+    }
+
+        .btn-back:hover {
+            color: var(--primary-color) !important;
+        }
+</style>
+
+<div class="container mt-4">
+    <h2 class="page-title">Thêm Phiếu Giảm Giá Mới</h2>
+
+    <div class="form-card">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Mã Code Giảm Giá</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Code_Giam_Gia, new { htmlAttributes = new { @class = "form-control input-custom", placeholder = "Ví dụ: NHASACHMOI, GIAM20K...", style = "text-transform: uppercase;" } })
+                                @Html.ValidationMessageFor(model => model.Code_Giam_Gia, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Loại Hình Giảm Giá</label>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.Loai_Giam_Gia, new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "Theo Phần Trăm (%)", Value = "Phan_Tram" },
+                                    new SelectListItem { Text = "Theo Số Tiền Cố Định (đ)", Value = "So_Tien" }
+                                }, new { @class = "form-control input-custom", id = "ddl-loai-giam" })
+                                @Html.ValidationMessageFor(model => model.Loai_Giam_Gia, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12" id="lbl-gia-tri-giam">Mức Giảm Giá</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Gia_Tri_Giam, new { htmlAttributes = new { @class = "form-control input-custom", type = "number", placeholder = "Nhập số % hoặc số tiền giảm..." } })
+                                @Html.ValidationMessageFor(model => model.Gia_Tri_Giam, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3" id="div-giam-toi-da">
+                            <label class="form-label-custom col-md-12">Số Tiền Giảm Tối Đa (đ)</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Gia_Tri_Giam_Toi_Da, new { htmlAttributes = new { @class = "form-control input-custom", type = "number", placeholder = "Để trống nếu không giới hạn..." } })
+                                @Html.ValidationMessageFor(model => model.Gia_Tri_Giam_Toi_Da, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Giá Trị Đơn Hàng Tối Thiểu (đ)</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Gia_Tri_Don_Hang_Toi_Thieu, new { htmlAttributes = new { @class = "form-control input-custom", type = "number", placeholder = "Điều kiện áp dụng đơn hàng..." } })
+                                @Html.ValidationMessageFor(model => model.Gia_Tri_Don_Hang_Toi_Thieu, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Số Lượng Phát Hành</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.So_Luong_Con_Lai, new { htmlAttributes = new { @class = "form-control input-custom", type = "number", placeholder = "Ví dụ: 100" } })
+                                @Html.ValidationMessageFor(model => model.So_Luong_Con_Lai, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Ngày Bắt Đầu Có Hiệu Lực</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Ngay_Bat_Dau, new { htmlAttributes = new { @class = "form-control input-custom", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.Ngay_Bat_Dau, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Ngày Hết Hạn</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Ngay_Ket_Thuc, new { htmlAttributes = new { @class = "form-control input-custom", type = "date" } })
+                                @Html.ValidationMessageFor(model => model.Ngay_Ket_Thuc, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Trạng Thái Kích Hoạt</label>
+                            <div class="col-md-12">
+                                @Html.DropDownListFor(model => model.Trang_Thai, new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "Cho Phép Hoạt Động", Value = "Hoat_Dong" },
+                                    new SelectListItem { Text = "Tạm Thời Khóa", Value = "Tam_Khoa" }
+                                }, new { @class = "form-control input-custom" })
+                                @Html.ValidationMessageFor(model => model.Trang_Thai, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-4" />
+
+                <div class="form-group mb-0 mt-3">
+                    <div class="col-md-12 d-flex align-items-center justify-content-between">
+                        <a href="@Url.Action("Index")" class="btn-back">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                        </a>
+
+                        <button type="submit" class="btn btn-submit-custom">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Lưu Vào Hệ Thống
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function toggleGiamToiDa() {
+                var selectedValue = $("#ddl-loai-giam").val();
+                if (selectedValue === "So_Tien") {
+                    // Nếu giảm theo số tiền cố định thì ẩn ô giảm tối đa đi
+                    $("#div-giam-toi-da").slideUp();
+                    $("#lbl-gia-tri-giam").text("Mức Giảm Giá (đ)");
+                } else {
+                    // Nếu giảm theo phần trăm thì hiện ô giới hạn giảm tối đa
+                    $("#div-giam-toi-da").slideDown();
+                    $("#lbl-gia-tri-giam").text("Mức Giảm Giá (%)");
+                }
+            }
+
+            // Chạy kiểm tra ngay khi load trang
+            toggleGiamToiDa();
+
+            // Lắng nghe sự kiện thay đổi của Dropdown chọn loại giảm giá
+            $("#ddl-loai-giam").change(function () {
+                toggleGiamToiDa();
+            });
+        });
+    </script>
+}

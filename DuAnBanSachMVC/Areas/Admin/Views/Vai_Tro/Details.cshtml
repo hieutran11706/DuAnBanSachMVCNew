@@ -1,0 +1,147 @@
+﻿@model DuAnBanSachMVC.Models.Vai_Tro
+
+@{
+    ViewBag.Title = "Chi Tiết Vai Trò";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90; /* Xanh ngọc chủ đạo */
+        --primary-hover: #4A8376; /* Xanh ngọc đậm */
+        --bg-light: #F8F9FA;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 22px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    /* Định dạng nhãn và giá trị thông tin */
+    .info-label {
+        font-weight: 600;
+        color: #6c757d;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2F3E46;
+    }
+
+    /* Nút Chỉnh sửa (Xanh ngọc đầy đủ) */
+    .btn-edit-role {
+        background-color: var(--primary-color) !important;
+        color: #ffffff !important;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 25px;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .btn-edit-role:hover {
+            background-color: var(--primary-hover) !important;
+            box-shadow: 0 4px 12px rgba(95, 159, 144, 0.3);
+            transform: translateY(-1px);
+        }
+
+    /* Nút Quay lại (Viền xanh ngọc) */
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        color: var(--primary-color) !important;
+        border: 1.5px solid var(--primary-color);
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: var(--primary-color);
+            color: #ffffff !important;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(95, 159, 144, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-back:active {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(0);
+        }
+</style>
+
+<div class="container mt-4" style="max-width: 650px;">
+    <!-- Tiêu đề trang -->
+    <div class="mb-4">
+        <h2 class="page-title m-0">Chi Tiết Vai Trò</h2>
+        <p class="text-muted m-0 mt-1 small">Xem thông tin cấu hình chi tiết của vai trò trong hệ thống.</p>
+    </div>
+
+    <!-- Hộp chứa chi tiết dữ liệu -->
+    <div class="card card-custom mb-4">
+        <div class="card-body p-4">
+
+            <!-- Hàng thông tin Mã Vai Trò -->
+            <div class="row mb-3">
+                <div class="col-sm-4 info-label align-self-center">
+                    Mã số vai trò
+                </div>
+                <div class="col-sm-8 info-value align-self-center">
+                    <!-- Hiển thị mã vai trò kiểu số int trong một khung badge cá tính -->
+                    <span class="badge px-3 py-2" style="background-color: #E6F2F0; color: var(--primary-color); font-family: monospace; font-size: 15px;">
+                        @Html.DisplayFor(model => model.Ma_Vai_Tro)
+                    </span>
+                </div>
+            </div>
+
+            <hr style="border-color: #eee;" />
+
+            <!-- Hàng thông tin Tên Vai Trò -->
+            <div class="row mt-3">
+                <div class="col-sm-4 info-label align-self-center">
+                    Tên vai trò
+                </div>
+                <div class="col-sm-8 info-value align-self-center">
+                    @Html.DisplayFor(model => model.Ten_Vai_Tro)
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Thanh chức năng điều hướng dưới cùng -->
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Nút Quay lại -->
+        <a href="@Url.Action("Index")" class="btn-back">
+            <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+        </a>
+
+        <!-- Nút Đi đến trang Sửa -->
+        <a href="@Url.Action("Edit", new { id = Model.Ma_Vai_Tro })" class="btn-edit-role shadow-sm">
+            <i class="fa-solid fa-pen-to-square me-2"></i> Chỉnh sửa vai trò
+        </a>
+    </div>
+</div>

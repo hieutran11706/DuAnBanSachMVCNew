@@ -1,0 +1,84 @@
+﻿@model DuAnBanSachMVC.Models.Danh_Gia
+
+<style>
+    .info-label-partial {
+        font-weight: 600;
+        color: #6c757d;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value-partial {
+        font-size: 16px;
+        font-weight: 700;
+        color: #2F3E46;
+    }
+
+    .text-star-partial {
+        color: #FFC107;
+        font-size: 18px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <div class="info-label-partial">Độc giả gửi</div>
+        <div class="info-value-partial mt-1">
+            <i class="fas fa-user-circle text-secondary mr-1"></i>
+            @(Model.Chi_Tiet_Don_Hang?.Don_Hang?.Khach_Hang?.Ho_Ten ?? "Ẩn danh")
+        </div>
+        <small class="text-muted d-block mt-1">
+            <i class="fas fa-phone fa-xs mr-1"></i> SĐT: @(Model.Chi_Tiet_Don_Hang?.Don_Hang?.Khach_Hang?.So_Dien_Thoai ?? "N/A")
+        </small>
+    </div>
+
+    <div class="col-md-6 mb-3">
+        <div class="info-label-partial">Ngày đánh giá</div>
+        <div class="info-value-partial mt-1">
+            <i class="far fa-calendar-alt text-secondary mr-1"></i>
+            @Model.Ngay_Danh_Gia.ToString("dd/MM/yyyy")
+        </div>
+    </div>
+
+    <div class="col-12 mb-3">
+        <div class="info-label-partial">Sách được đánh giá</div>
+        <div class="info-value-partial mt-1 text-primary">
+            <i class="fas fa-book mr-1"></i>
+            @(Model.Chi_Tiet_Don_Hang?.Sach?.Ten_Sach ?? "Sách không xác định")
+        </div>
+        <small class="badge badge-light border mt-1">Mã sách: @Model.Chi_Tiet_Don_Hang?.Saches?.Ma_Sach</small>
+    </div>
+
+    <div class="col-12 mb-3">
+        <div class="info-label-partial">Số sao đánh giá</div>
+        <div class="text-star-partial mt-1">
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= Model.So_Sao)
+                {
+                    <i class="fas fa-star"></i>
+                }
+                else
+                {
+                    <i class="far fa-star text-muted"></i>
+                }
+            }
+            <span class="small font-weight-bold text-secondary ml-1" style="font-size: 14px;">(@Model.So_Sao / 5 sao)</span>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="info-label-partial">Nội dung bình luận</div>
+        <div class="p-3 bg-light rounded mt-2 text-secondary" style="font-size: 15px; border-left: 4px solid #5F9F90; line-height: 1.5; min-height: 60px;">
+            @if (string.IsNullOrEmpty(Model.Binh_luan))
+            {
+                <span class="text-muted italic"><i class="fas fa-pen-nib mr-1"></i>Khách hàng chỉ chấm sao, không để lại lời bình luận.</span>
+            }
+            else
+            {
+                @Model.Binh_luan
+            }
+        </div>
+    </div>
+</div>

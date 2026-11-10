@@ -1,0 +1,223 @@
+﻿@model DuAnBanSachMVC.Models.Phieu_Giam_Gia
+
+@{
+    ViewBag.Title = "Chi Tiết Phiếu Giảm Giá";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    .form-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+        padding: 30px;
+        max-width: 800px;
+    }
+
+    .form-label-custom {
+        font-weight: 600;
+        color: #2F3E46;
+        margin-bottom: 4px;
+    }
+
+    .display-custom {
+        border: 1.5px solid #E0E7E5 !important;
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
+        background-color: var(--bg-light);
+        color: #495057;
+        min-height: 45px;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-edit-custom {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 20px !important;
+        padding: 10px 25px !important;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .btn-edit-custom:hover {
+            background-color: var(--primary-hover) !important;
+            color: #fff !important;
+        }
+
+    .btn-back {
+        color: #666 !important;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .btn-back:hover {
+            color: var(--primary-color) !important;
+        }
+
+    code {
+        font-size: 110%;
+        color: #e83e8c;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="page-title">Chi Tiết Phiếu Giảm Giá</h2>
+
+    <div class="form-card">
+        <div class="form-horizontal">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Mã Code Phiếu</label>
+                        <div class="col-md-12">
+                            <div class="display-custom">
+                                <code>@Model.Code_Giam_Gia</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Loại Hình Áp Dụng</label>
+                        <div class="col-md-12">
+                            <div class="display-custom text-secondary">
+                                @(Model.Loai_Giam_Gia == "Phan_Tram" ? "Giảm giá theo phần trăm (%)" : "Giảm tiền mặt cố định (đ)")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Mức Giảm Giá</label>
+                        <div class="col-md-12">
+                            <div class="display-custom font-weight-bold">
+                                @if (Model.Loai_Giam_Gia == "Phan_Tram")
+                                {
+                                    <span>@string.Format("{0:0}", Model.Gia_Tri_Giam)%</span>
+                                }
+                                else
+                                {
+                                    <span>@string.Format("{0:N0}", Model.Gia_Tri_Giam) đ</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Giảm Tối Đa</label>
+                        <div class="col-md-12">
+                            <div class="display-custom text-secondary">
+                                @if (Model.Loai_Giam_Gia == "Phan_Tram" && Model.Gia_Tri_Giam_Toi_Da.HasValue)
+                                {
+                                    <span>@string.Format("{0:N0}", Model.Gia_Tri_Giam_Toi_Da.Value) đ</span>
+                                }
+                                else if (Model.Loai_Giam_Gia == "So_Tien")
+                                {
+                                    <span class="text-muted font-italic">Không áp dụng (Giảm theo số tiền cố định)</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted font-italic">Không giới hạn</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Đơn Hàng Tối Thiểu</label>
+                        <div class="col-md-12">
+                            <div class="display-custom font-weight-bold">
+                                @string.Format("{0:N0}", Model.Gia_Tri_Don_Hang_Toi_Thieu) đ
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Số Lượng Còn Lại</label>
+                        <div class="col-md-12">
+                            <div class="display-custom font-weight-bold text-success">
+                                @Model.So_Luong_Con_Lai lượt sử dụng
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Ngày Kích Hoạt</label>
+                        <div class="col-md-12">
+                            <div class="display-custom text-secondary">
+                                @Model.Ngay_Bat_Dau.ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Ngày Hết Hạn</label>
+                        <div class="col-md-12">
+                            <div class="display-custom text-secondary">
+                                @Model.Ngay_Ket_Thuc.ToString("dd/MM/yyyy")
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label-custom col-md-12">Trạng Thái Hệ Thống</label>
+                        <div class="col-md-12">
+                            <div class="display-custom">
+                                @if (Model.Trang_Thai == "Hoat_Dong" && Model.Ngay_Ket_Thuc >= DateTime.Today && Model.So_Luong_Con_Lai > 0)
+                                {
+                                    <span class="text-success font-weight-bold"><i class="fa-solid fa-circle-check mr-1"></i> Đang hoạt động thông thường</span>
+                                }
+                                else if (Model.Trang_Thai == "Tam_Khoa")
+                                {
+                                    <span class="text-warning font-weight-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Đang tạm khóa</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger font-weight-bold"><i class="fa-solid fa-circle-xmark mr-1"></i> Hết hạn hoặc hết lượt</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="mt-4" />
+
+            <div class="form-group mb-0 mt-3">
+                <div class="col-md-12 d-flex align-items-center justify-content-between">
+                    <a href="@Url.Action("Index")" class="btn-back">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                    </a>
+
+                    <a href="@Url.Action("Edit", new { id = Model.Ma_Phieu_Giam_Gia })" class="btn-edit-custom">
+                        <i class="fa-solid fa-pen-to-square me-1"></i> Chỉnh Sửa Phiếu
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,342 @@
+/* ===== Trang "Tài khoản của tôi" — đồng bộ tông màu vintage với login.css / Header.css ===== */
+
+.account-page-wrapper {
+    background: #F6F1E4;
+    font-family: 'Manrope', sans-serif;
+    color: #1C2B45;
+    min-height: calc(100vh - 150px);
+    padding: 30px 16px 60px;
+    box-sizing: border-box;
+}
+
+.account-page-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.breadcrumbs {
+    list-style: none;
+    display: flex;
+    gap: 8px;
+    padding: 0;
+    margin: 0 0 20px;
+    font-size: .85rem;
+    color: #6b7488;
+}
+
+    .breadcrumbs li:not(:last-child)::after {
+        content: "/";
+        margin-left: 8px;
+        color: #c9c1a4;
+    }
+
+    .breadcrumbs a {
+        color: #6b7488;
+        text-decoration: none;
+    }
+
+        .breadcrumbs a.active {
+            color: #7B2635;
+            font-weight: 700;
+        }
+
+/* Khối header: avatar + tên + email */
+.account-header-block {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: #FFFDF8;
+    border: 1px solid #EDE5CF;
+    border-radius: 16px;
+    padding: 22px 26px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 30px rgba(28,43,69,.05);
+}
+
+.account-avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #F6F1E4;
+    color: #7B2635;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.account-header-block h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: #1C2B45;
+}
+
+.account-header-block p {
+    margin: 0;
+    font-size: .88rem;
+    color: #6b7488;
+}
+
+/* Layout 2 cột: sidebar + nội dung */
+.account-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+}
+
+.account-sidebar {
+    background: #FFFDF8;
+    border: 1px solid #EDE5CF;
+    border-radius: 16px;
+    padding: 10px;
+    width: 240px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-sizing: border-box;
+}
+
+.account-tab-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    color: #1C2B45;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .9rem;
+    transition: 0.15s;
+}
+
+    .account-tab-link i {
+        width: 18px;
+        text-align: center;
+        color: #9a8f6e;
+    }
+
+    .account-tab-link:hover {
+        background: #F6F1E4;
+    }
+
+    .account-tab-link.active {
+        background: #7B2635;
+        color: #FFFDF8;
+    }
+
+        .account-tab-link.active i {
+            color: #FFFDF8;
+        }
+
+.account-tab-logout {
+    margin-top: 8px;
+    border-top: 1px solid #EDE5CF;
+    padding-top: 14px;
+    border-radius: 0;
+    color: #B3261E;
+}
+
+    .account-tab-logout i {
+        color: #B3261E;
+    }
+
+.account-content-panel {
+    flex: 1;
+    min-width: 0;
+    background: #FFFDF8;
+    border: 1px solid #EDE5CF;
+    border-radius: 16px;
+    padding: 32px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(28,43,69,.05);
+}
+
+.panel-title {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 6px;
+    color: #1C2B45;
+}
+
+.panel-sub {
+    font-size: .88rem;
+    color: #6b7488;
+    margin: 0 0 26px;
+}
+
+/* Form */
+.form-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    max-width: 480px;
+}
+
+    .form-row label {
+        font-weight: 700;
+        font-size: .85rem;
+        margin-bottom: 6px;
+        color: #1C2B45;
+    }
+
+.input-text {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid #E4DCC5;
+    font-family: 'Manrope';
+    font-size: .95rem;
+    outline: none;
+    background-color: #FFFDF8;
+    color: #1C2B45;
+    box-sizing: border-box;
+    transition: 0.2s;
+}
+
+    .input-text:focus {
+        border-color: #7B2635;
+        background-color: #ffffff;
+    }
+
+    .input-text:disabled {
+        background-color: #F6F1E4;
+        color: #8a8265;
+        cursor: not-allowed;
+    }
+
+.field-validation-error {
+    color: #B3261E;
+    font-size: .8rem;
+    font-weight: 500;
+    display: block;
+    margin-top: 4px;
+}
+
+.alert-thongbao.danger {
+    background-color: #FFF0F2;
+    border: 1px solid #F8D7DA;
+    padding: 12px 12px 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    color: #7B2635;
+    font-size: .85rem;
+}
+
+    .alert-thongbao.danger ul {
+        margin: 0;
+        padding-left: 15px;
+    }
+
+.alert-thongbao.success {
+    background: #EAF4EC;
+    color: #2E5B39;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: .88rem;
+    border: 1px solid #C3E6CB;
+}
+
+.account-submit-btn {
+    background: #7B2635;
+    color: #FFFDF8;
+    border: none;
+    padding: 13px 30px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: .92rem;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 4px 12px rgba(123, 38, 53, 0.15);
+}
+
+    .account-submit-btn:hover {
+        background: #611D29;
+        transform: translateY(-1px);
+    }
+
+/* Bảng đơn hàng */
+.order-table-wrap {
+    overflow-x: auto;
+}
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+}
+
+    .order-table th {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 2px solid #EDE5CF;
+        color: #6b7488;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .order-table td {
+        padding: 12px;
+        border-bottom: 1px solid #F0EAD9;
+        white-space: nowrap;
+    }
+
+.order-status-badge {
+    background: #F6F1E4;
+    color: #7B2635;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+.order-detail-link {
+    color: #7B2635;
+    font-weight: 700;
+    text-decoration: none;
+    font-size: .85rem;
+}
+
+    .order-detail-link:hover {
+        text-decoration: underline;
+    }
+
+.account-empty-state {
+    text-align: center;
+    padding: 50px 20px;
+    color: #6b7488;
+}
+
+    .account-empty-state i {
+        font-size: 2.4rem;
+        color: #d8cfae;
+        margin-bottom: 14px;
+        display: block;
+    }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .account-layout {
+        flex-direction: column;
+    }
+
+    .account-sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .account-tab-logout {
+        margin-top: 0;
+        border-top: none;
+        border-left: 1px solid #EDE5CF;
+    }
+
+    .account-content-panel {
+        padding: 22px;
+    }
+}

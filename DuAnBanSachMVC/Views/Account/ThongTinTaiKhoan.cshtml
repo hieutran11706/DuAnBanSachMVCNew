@@ -1,0 +1,184 @@
+﻿@model TaiKhoanTongHopViewModel
+@{
+    ViewBag.Title = "Tài khoản của tôi";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string tab = Model.TabHienTai;
+}
+@section Styles{
+    <link rel="stylesheet" href="~/Content/Account.css" />
+}
+
+<main class="account-page-wrapper">
+    <div class="account-page-container">
+
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumbs">
+                <li><a href="/Home/HomePage">Trang chủ</a></li>
+                <li><a href="/Account/ThongTinTaiKhoan" class="active">Tài khoản của tôi</a></li>
+            </ul>
+        </nav>
+
+        <div class="account-header-block">
+            <div class="account-avatar"><i class="fa-regular fa-user"></i></div>
+            <div>
+                <h1>@Model.ThongTin.Ho_Ten</h1>
+                <p>@Model.ThongTin.Email</p>
+            </div>
+        </div>
+
+        @if (TempData["ThongBao"] != null)
+        {
+            <div class="alert-thongbao @TempData["LoaiThongBao"]" style="margin-bottom:20px;">@TempData["ThongBao"]</div>
+        }
+
+        <div class="account-layout">
+
+            <!-- Menu tab bên trái -->
+            <aside class="account-sidebar">
+                <a href="?tab=thongtin" class="account-tab-link @(tab == "thongtin" ? "active" : "")">
+                    <i class="fa-regular fa-id-card"></i> Thông tin cá nhân
+                </a>
+                <a href="?tab=doimatkhau" class="account-tab-link @(tab == "doimatkhau" ? "active" : "")">
+                    <i class="fa-solid fa-lock"></i> Đổi mật khẩu
+                </a>
+                <a href="?tab=donhang" class="account-tab-link @(tab == "donhang" ? "active" : "")">
+                    <i class="fa-solid fa-box"></i> Lịch sử đơn hàng
+                </a>
+                <a href="/Home/Logout" class="account-tab-link account-tab-logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Đăng xuất
+                </a>
+            </aside>
+
+            <!-- Nội dung tab -->
+            <section class="account-content-panel">
+
+                @if (tab == "thongtin")
+                {
+                    <h2 class="panel-title">Thông tin cá nhân</h2>
+                    <p class="panel-sub">Cập nhật họ tên, email và số điện thoại liên hệ của bạn.</p>
+
+                    using (Html.BeginForm("CapNhatThongTin", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(m => m.ThongTin.Ma_Khach_Hang)
+
+                        if (!ViewData.ModelState.IsValid)
+                        {
+                            @Html.ValidationSummary(false, null, new { @class = "alert-thongbao danger" })
+                        }
+
+                        <div class="form-row">
+                            <label>Tên đăng nhập</label>
+                            <input type="text" class="input-text" value="@Model.ThongTin.Ten_Dang_Nhap" disabled="disabled" />
+                        </div>
+
+                        <div class="form-row">
+                            <label>Ngày tạo tài khoản</label>
+                            <input type="text" class="input-text" value="@(Model.ThongTin.Ngay_Tao.ToString("dd/MM/yyyy"))" disabled="disabled" />
+                        </div>
+
+                        <div class="form-row">
+                            @Html.LabelFor(m => m.ThongTin.Ho_Ten)
+                            @Html.TextBoxFor(m => m.ThongTin.Ho_Ten, new { @class = "input-text", placeholder = "Họ tên" })
+                            @Html.ValidationMessageFor(m => m.ThongTin.Ho_Ten)
+                        </div>
+
+                        <div class="form-row">
+                            @Html.LabelFor(m => m.ThongTin.Email)
+                            @Html.TextBoxFor(m => m.ThongTin.Email, new { @class = "input-text", placeholder = "Email" })
+                            @Html.ValidationMessageFor(m => m.ThongTin.Email)
+                        </div>
+
+                        <div class="form-row">
+                            @Html.LabelFor(m => m.ThongTin.So_Dien_Thoai)
+                            @Html.TextBoxFor(m => m.ThongTin.So_Dien_Thoai, new { @class = "input-text", placeholder = "Số điện thoại" })
+                            @Html.ValidationMessageFor(m => m.ThongTin.So_Dien_Thoai)
+                        </div>
+
+                        <button type="submit" class="account-submit-btn">Lưu thay đổi</button>
+                    }
+                }
+                else if (tab == "doimatkhau")
+                {
+                    <h2 class="panel-title">Đổi mật khẩu</h2>
+                    <p class="panel-sub">Vì lý do bảo mật, hãy chọn mật khẩu mới có ít nhất 6 ký tự.</p>
+
+                    using (Html.BeginForm("DoiMatKhau", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        if (!ViewData.ModelState.IsValid)
+                        {
+                            @Html.ValidationSummary(false, null, new { @class = "alert-thongbao danger" })
+                        }
+
+                        <div class="form-row">
+                            @Html.LabelFor(m => m.DoiMatKhau.Mat_Khau_Hien_Tai)
+                            @Html.PasswordFor(m => m.DoiMatKhau.Mat_Khau_Hien_Tai, new { @class = "input-text", placeholder = "Mật khẩu hiện tại" })
+                            @Html.ValidationMessageFor(m => m.DoiMatKhau.Mat_Khau_Hien_Tai)
+                        </div>
+
+                        <div class="form-row">
+                            @Html.LabelFor(m => m.DoiMatKhau.Mat_Khau_Moi)
+                            @Html.PasswordFor(m => m.DoiMatKhau.Mat_Khau_Moi, new { @class = "input-text", placeholder = "Mật khẩu mới" })
+                            @Html.ValidationMessageFor(m => m.DoiMatKhau.Mat_Khau_Moi)
+                        </div>
+
+                        <div class="form-row">
+                            @Html.LabelFor(m => m.DoiMatKhau.Xac_Nhan_Mat_Khau_Moi)
+                            @Html.PasswordFor(m => m.DoiMatKhau.Xac_Nhan_Mat_Khau_Moi, new { @class = "input-text", placeholder = "Xác nhận mật khẩu mới" })
+                            @Html.ValidationMessageFor(m => m.DoiMatKhau.Xac_Nhan_Mat_Khau_Moi)
+                        </div>
+
+                        <button type="submit" class="account-submit-btn">Đổi mật khẩu</button>
+                    }
+                }
+                else
+                {
+                    <h2 class="panel-title">Lịch sử đơn hàng</h2>
+                    <p class="panel-sub">Danh sách các đơn hàng bạn đã đặt tại Bookora.</p>
+
+                    if (!Model.DonHangs.Any())
+                    {
+                        <div class="account-empty-state">
+                            <i class="fa-solid fa-box-open"></i>
+                            <p>Bạn chưa có đơn hàng nào.</p>
+                            <a href="/Home/HomePage" class="account-submit-btn" style="display:inline-block; text-decoration:none; width:auto; padding:12px 26px;">Mua sắm ngay</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="order-table-wrap">
+                            <table class="order-table">
+                                <thead>
+                                    <tr>
+                                        <th>Mã đơn</th>
+                                        <th>Ngày đặt</th>
+                                        <th>Số sản phẩm</th>
+                                        <th>Thành tiền</th>
+                                        <th>Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var dh in Model.DonHangs)
+                                    {
+                                        <tr>
+                                            <td>#@dh.Ma_Don_Hang</td>
+                                            <td>@dh.Ngay_Dat.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>@dh.Chi_Tiet_Don_Hang.Sum(c => c.So_Luong)</td>
+                                            <td>@dh.Thanh_Tien.DinhDangTien()</td>
+                                            <td><span class="order-status-badge">@dh.Trang_Thai</span></td>
+                                            <td><a href="/Home/OrderComplete/@dh.Ma_Don_Hang" class="order-detail-link">Xem chi tiết</a></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                }
+
+            </section>
+        </div>
+    </div>
+</main>

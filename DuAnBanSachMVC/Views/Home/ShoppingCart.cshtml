@@ -1,0 +1,443 @@
+﻿@model List<CartItemViewModel>
+@{
+    ViewBag.Title = "Shopping Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    decimal tongTien = Model != null ? Model.Sum(x => x.Thanh_Tien) : 0;
+}
+@section Styles{
+    <link rel="stylesheet" href="~/Content/shopping-cart.css" />
+    <style>
+        /* Đồng bộ phong cách thiết kế Vintage Bookora */
+        .shopping-cart-main {
+            background: #F6F1E4;
+            color: #1C2B45;
+            font-family: 'Manrope', sans-serif;
+            min-height: calc(100vh - 120px);
+            padding: 40px 16px;
+            box-sizing: border-box;
+        }
+
+        .shopping-cart {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Tối ưu thanh điều hướng tiến trình breadcrumb */
+        .breadcrumbs {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px 0;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+            .breadcrumbs li {
+                display: flex;
+                align-items: center;
+                color: #6b7488;
+            }
+
+                .breadcrumbs li:not(:last-child)::after {
+                    content: "›";
+                    margin-left: 8px;
+                    color: #E4DCC5;
+                    font-size: 1.2rem;
+                }
+
+            .breadcrumbs a {
+                text-decoration: none;
+                color: #6b7488;
+                transition: 0.2s;
+            }
+
+                .breadcrumbs a.active {
+                    color: #7B2635;
+                    font-weight: 700;
+                }
+
+        /* Bố cục chia hai cột */
+        .checkout-cart-container {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .cart-left {
+            flex: 1;
+        }
+
+        .cart-right {
+            width: 340px;
+            flex-shrink: 0;
+        }
+
+        /* Bảng danh sách sản phẩm */
+        .shop_table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #FFFDF8;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(28,43,69,.04);
+            border: 1px solid #EDE5CF;
+        }
+
+            .shop_table th {
+                font-weight: 700;
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                color: #6b7488;
+                border-bottom: 2px solid #EDE5CF;
+                padding: 16px 20px;
+                background-color: #FFFDF8;
+            }
+
+            .shop_table td {
+                padding: 20px;
+                border-bottom: 1px solid #EDE5CF;
+                vertical-align: middle;
+            }
+
+        /* Khối xử lý thông tin sản phẩm trong ô bảng */
+        .product-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #B3261E;
+            font-size: 1.4rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: 0.2s;
+        }
+
+            .remove-item:hover {
+                transform: scale(1.15);
+            }
+
+        .product-image {
+            width: 65px;
+            height: 85px;
+            border-radius: 6px;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            border: 1px solid #EDE5CF;
+            background-color: #F6F1E4;
+        }
+
+            .product-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .product-title {
+            font-family: 'Fraunces', serif;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #1C2B45;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+            .product-title:hover {
+                color: #7B2635;
+            }
+
+        .product-price {
+            font-weight: 600;
+            color: #1C2B45;
+            font-size: 0.95rem;
+        }
+
+        .product-subtotal {
+            font-weight: 700;
+            color: #7B2635;
+            font-size: 1rem;
+            text-align: right;
+        }
+
+        .shop_table th.product-subtotal {
+            text-align: right;
+        }
+
+        /* Nút điều khiển số lượng tăng giảm mượt mà */
+        .quantity-controls {
+            display: inline-flex;
+            align-items: center;
+            border: 1.5px solid #E4DCC5;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #FFFDF8;
+        }
+
+            .quantity-controls button {
+                background: none;
+                border: none;
+                width: 32px;
+                height: 36px;
+                cursor: pointer;
+                font-weight: 600;
+                font-size: 1.1rem;
+                color: #1C2B45;
+                transition: 0.2s;
+            }
+
+                .quantity-controls button:hover {
+                    background-color: #F6F1E4;
+                    color: #7B2635;
+                }
+
+            .quantity-controls input.quantity {
+                width: 44px;
+                height: 36px;
+                border: none;
+                border-left: 1.5px solid #E4DCC5;
+                border-right: 1.5px solid #E4DCC5;
+                text-align: center;
+                font-family: 'Manrope';
+                font-weight: 700;
+                font-size: 0.95rem;
+                outline: none;
+                background: #FFFDF8;
+                color: #1C2B45;
+                -moz-appearance: textfield;
+            }
+
+                .quantity-controls input.quantity::-webkit-outer-spin-button,
+                .quantity-controls input.quantity::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+
+        /* Khối hành động giỏ hàng bên dưới bảng */
+        .cart-actions {
+            margin-top: 20px;
+        }
+
+        .continue-shopping {
+            display: inline-block;
+            color: #7B2635;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.92rem;
+            transition: 0.2s;
+        }
+
+            .continue-shopping:hover {
+                text-decoration: underline;
+            }
+
+        /* Khối tổng kết thanh toán bên phải */
+        .cart-totals {
+            background: #FFFDF8;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(28,43,69,.04);
+            border: 1px solid #EDE5CF;
+        }
+
+            .cart-totals h2 {
+                font-family: 'Fraunces', serif;
+                font-size: 1.35rem;
+                font-weight: 600;
+                margin: 0 0 20px 0;
+                border-bottom: 2px solid #EDE5CF;
+                padding-bottom: 12px;
+            }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: #6b7488;
+            margin-bottom: 14px;
+        }
+
+            .total-row.total-amount {
+                border-top: 1px dashed #E4DCC5;
+                padding-top: 16px;
+                margin-top: 16px;
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: #1C2B45;
+            }
+
+                .total-row.total-amount span:last-child {
+                    color: #7B2635;
+                    font-family: 'Fraunces', serif;
+                    font-size: 1.3rem;
+                }
+
+        .checkout-button {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: #7B2635;
+            color: #FFFDF8;
+            padding: 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.98rem;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 24px;
+            box-shadow: 0 4px 12px rgba(123, 38, 53, 0.15);
+            transition: 0.2s;
+        }
+
+            .checkout-button:hover {
+                background: #611D29;
+                transform: translateY(-1px);
+            }
+
+        /* Giao diện giỏ hàng trống */
+        .empty-cart-box {
+            text-align: center;
+            padding: 60px 20px;
+            background: #FFFDF8;
+            border-radius: 16px;
+            border: 1.5px dashed #E4DCC5;
+            max-width: 500px;
+            margin: 40px auto;
+        }
+
+            .empty-cart-box p {
+                font-size: 1.1rem;
+                color: #6b7488;
+                margin: 0 0 24px 0;
+            }
+
+            .empty-cart-box .continue-shopping-btn {
+                display: inline-block;
+                background: #7B2635;
+                color: #FFFDF8;
+                padding: 12px 28px;
+                border-radius: 999px;
+                font-weight: 700;
+                text-decoration: none;
+                transition: 0.2s;
+            }
+
+                .empty-cart-box .continue-shopping-btn:hover {
+                    background: #611D29;
+                }
+    </style>
+}
+
+<main class="shopping-cart-main">
+    <div class="shopping-cart">
+        <!-- Tiến trình mua sắm -->
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumbs">
+                <li><a href="/Home/ShoppingCart" class="active">Giỏ hàng</a></li>
+                <li><a href="/Home/CheckOutDetails">Thanh toán</a></li>
+                <li><a href="/Home/OrderComplete">Hoàn tất</a></li>
+            </ul>
+        </nav>
+
+        @if (Model == null || !Model.Any())
+        {
+            <div class="empty-cart-box">
+                <p>Giỏ hàng của bạn đang trống.</p>
+                <a href="/Home/HomePage" class="continue-shopping-btn">Tiếp tục mua sắm</a>
+            </div>
+        }
+        else
+        {
+            <div class="checkout-cart-container">
+                <!-- Cột trái: Danh sách sản phẩm -->
+                <div class="cart-left">
+                    <table class="shop_table">
+                        <thead>
+                            <tr>
+                                <th class="product-name">Sản phẩm</th>
+                                <th class="product-price">Đơn giá</th>
+                                <th class="product-quantity" style="text-align: center;">Số lượng</th>
+                                <th class="product-subtotal">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="cart_item">
+                                    <td class="product-cell">
+                                        <div class="product-wrapper">
+                                            @using (Html.BeginForm("XoaKhoiGioHang", "Home", FormMethod.Post, new { style = "display:inline; margin:0;" }))
+                                            {
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="maSach" value="@item.Ma_Sach" />
+                                                <button type="submit" class="remove-item" title="Xoá">&times;</button>
+                                            }
+                                            <a class="product-image" href="/Home/Detail/@item.Ma_Sach">
+                                                <img src="@(string.IsNullOrEmpty(item.Anh_Bia_Url) ? "https://via.placeholder.com/75x95?text=No+Image" : item.Anh_Bia_Url)" alt="@item.Ten_Sach" />
+                                            </a>
+                                            <a class="product-title" href="/Home/Detail/@item.Ma_Sach">@item.Ten_Sach</a>
+                                        </div>
+                                    </td>
+                                    <td class="product-price"><span>@item.Don_Gia.DinhDangTien()</span></td>
+                                    <td class="product-quantity" style="text-align: center;">
+                                        @using (Html.BeginForm("CapNhatSoLuong", "Home", FormMethod.Post, new { style = "display:inline; margin:0;" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="maSach" value="@item.Ma_Sach" />
+                                            <div class="quantity-controls">
+                                                <button type="button" class="minus" onclick="doiSoLuong(this, -1)">-</button>
+                                                <input class="quantity" type="number" name="soLuong" value="@item.So_Luong" min="1" max="@item.Ton_Kho" onchange="this.form.submit()" />
+                                                <button type="button" class="plus" onclick="doiSoLuong(this, 1)">+</button>
+                                            </div>
+                                        }
+                                    </td>
+                                    <td class="product-subtotal"><span>@item.Thanh_Tien.DinhDangTien()</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="cart-actions">
+                        <a href="/Home/HomePage" class="continue-shopping">&larr; Tiếp tục mua sắm</a>
+                    </div>
+                </div>
+
+                <!-- Cột phải: Tóm tắt đơn hàng -->
+                <div class="cart-right">
+                    <div class="cart-totals">
+                        <h2>Tóm tắt đơn hàng</h2>
+                        <div class="total-row">
+                            <span>Tạm tính</span>
+                            <span style="font-weight: 600; color: #1C2B45;">@tongTien.DinhDangTien()</span>
+                        </div>
+                        <div class="total-row total-amount">
+                            <span>Tổng cộng</span>
+                            <span>@tongTien.DinhDangTien()</span>
+                        </div>
+                        <a href="/Home/CheckOutDetails" class="checkout-button">Tiến hành thanh toán</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</main>
+
+<script>
+    function doiSoLuong(btn, delta) {
+        var input = btn.parentElement.querySelector('.quantity');
+        var gtri = parseInt(input.value || '1', 10) + delta;
+        var max = parseInt(input.max || '999', 10);
+        if (gtri < 1) gtri = 1;
+        if (gtri > max) gtri = max;
+        input.value = gtri;
+        input.form.submit();
+    }
+</script>

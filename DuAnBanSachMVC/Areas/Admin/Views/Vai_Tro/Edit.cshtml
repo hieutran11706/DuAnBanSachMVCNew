@@ -1,0 +1,157 @@
+﻿@model DuAnBanSachMVC.Models.Vai_Tro
+
+@{
+    ViewBag.Title = "Chỉnh Sửa Vai Trò";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90; /* Xanh ngọc chủ đạo */
+        --primary-hover: #4A8376; /* Xanh ngọc đậm khi hover */
+        --bg-light: #F8F9FA;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 22px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    /* Định dạng ô nhập liệu form */
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        border: 1px solid #ced4da;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(95, 159, 144, 0.25);
+        }
+
+    /* Nút Lưu (Xanh ngọc đầy đủ) */
+    .btn-save-role {
+        background-color: var(--primary-color) !important;
+        color: #ffffff !important;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-save-role:hover {
+            background-color: var(--primary-hover) !important;
+            box-shadow: 0 4px 12px rgba(95, 159, 144, 0.3);
+            transform: translateY(-1px);
+        }
+
+    /* Nút Quay lại (Viền xanh ngọc) */
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        color: var(--primary-color) !important;
+        border: 1.5px solid var(--primary-color);
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: var(--primary-color);
+            color: #ffffff !important;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(95, 159, 144, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-back:active {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(0);
+        }
+
+    .text-danger {
+        font-size: 13px;
+        font-weight: 500;
+    }
+</style>
+
+<div class="container mt-4" style="max-width: 650px;">
+    <!-- Tiêu đề trang -->
+    <div class="mb-4">
+        <h2 class="page-title m-0">Chỉnh Sửa Vai Trò</h2>
+        <p class="text-muted m-0 mt-1 small">Cập nhật lại tên hiển thị cho vai trò hiện tại.</p>
+    </div>
+
+    <!-- Khung Form nhập liệu -->
+    <div class="card card-custom">
+        <div class="card-body p-4">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <!-- Thông báo lỗi tổng quan nếu có -->
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger border-0" })
+
+                    <!-- Giữ nguyên ID ẩn để gửi lên Controller -->
+                    @Html.HiddenFor(model => model.Ma_Vai_Tro)
+
+                    <!-- Hiển thị Mã vai trò hiện tại (Chỉ xem, không cho sửa ID) -->
+                    <div class="form-group mb-4">
+                        <label class="control-label font-weight-bold text-dark mb-1">Mã số vai trò</label>
+                        <div>
+                            <span class="badge px-3 py-2" style="background-color: #E6F2F0; color: var(--primary-color); font-family: monospace; font-size: 15px;">
+                                @Model.Ma_Vai_Tro
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Trường nhập Tên Vai Trò mới -->
+                    <div class="form-group mb-4">
+                        <label class="control-label font-weight-bold text-dark mb-1">Tên Vai Trò</label>
+                        <div>
+                            @Html.EditorFor(model => model.Ten_Vai_Tro, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập tên vai trò mới...", required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Ten_Vai_Tro, "", new { @class = "text-danger d-block mt-1" })
+                        </div>
+                    </div>
+
+                    <hr class="my-4" style="border-color: #eee;" />
+
+                    <!-- Thanh chức năng điều hướng và lưu -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Nút Quay lại -->
+                        <a href="@Url.Action("Index")" class="btn-back">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                        </a>
+
+                        <!-- Nút Xác nhận lưu thay đổi -->
+                        <button type="submit" class="btn btn-save-role shadow-sm">
+                            <i class="fa-solid fa-floppy-disk me-2"></i> Cập nhật
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

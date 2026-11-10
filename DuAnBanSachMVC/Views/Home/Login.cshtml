@@ -1,0 +1,224 @@
+﻿@model LoginViewModel
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/Content/login.css" />
+    <style>
+        /* Nhúng style hệ màu Vintage đồng bộ với Layout mới */
+        .auth-main-wrapper {
+            background: #F6F1E4;
+            color: #1C2B45;
+            font-family: 'Manrope', sans-serif;
+            min-height: calc(100vh - 150px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            box-sizing: border-box;
+        }
+
+        .account-container {
+            background: #FFFDF8;
+            border-radius: 20px;
+            padding: 44px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 50px rgba(28,43,69,.08);
+            border: 1px solid #EDE5CF;
+            box-sizing: border-box;
+        }
+
+        .account-header h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.7rem;
+            font-weight: 600;
+            text-align: center;
+            margin: 0 0 6px;
+            color: #1C2B45;
+        }
+
+        .account-content .sub-title {
+            text-align: center;
+            color: #6b7488;
+            font-size: .92rem;
+            margin-bottom: 28px;
+        }
+
+        .form-row {
+            margin-bottom: 0; /* reset margin cũ nếu có */
+            display: flex;
+            flex-direction: column;
+        }
+
+            .form-row label {
+                font-weight: 700;
+                font-size: .85rem;
+                display: block;
+                margin: 14px 0 6px;
+                color: #1C2B45;
+            }
+
+        .input-text {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #E4DCC5;
+            font-family: 'Manrope';
+            font-size: .95rem;
+            outline: none;
+            background-color: #FFFDF8;
+            color: #1C2B45;
+            box-sizing: border-box;
+            transition: 0.2s;
+        }
+
+            .input-text:focus {
+                border-color: #7B2635;
+                background-color: #ffffff;
+            }
+
+        /* Định dạng các thẻ thông báo lỗi hiển thị gọn gàng */
+        .field-validation-error {
+            color: #B3261E;
+            font-size: .8rem;
+            font-weight: 500;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .alert-thongbao.danger {
+            background-color: #FFF0F2;
+            border: 1px solid #F8D7DA;
+            padding: 12px 12px 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #7B2635;
+            font-size: .85rem;
+        }
+
+            .alert-thongbao.danger ul {
+                margin: 0;
+                padding-left: 15px;
+            }
+
+        .form-row-login {
+            margin-top: 16px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .85rem;
+            color: #6b7488;
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 22px;
+        }
+
+            .remember-me input[type="checkbox"] {
+                accent-color: #7B2635;
+                width: 16px;
+                height: 16px;
+                margin: 0;
+            }
+
+        .login-button {
+            width: 100%;
+            background: #7B2635;
+            color: #FFFDF8;
+            border: none;
+            padding: 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .98rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(123, 38, 53, 0.15);
+        }
+
+            .login-button:hover {
+                background: #611D29;
+                transform: translateY(-1px);
+            }
+
+        .lost-password {
+            text-align: center;
+            margin-top: 24px;
+            font-size: .9rem;
+            color: #6b7488;
+        }
+
+            .lost-password a {
+                color: #7B2635;
+                font-weight: 700;
+                text-decoration: none;
+            }
+
+                .lost-password a:hover {
+                    text-decoration: underline;
+                }
+
+        .alert-success {
+            background: #EAF4EC;
+            color: #2E5B39;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: .88rem;
+            margin-bottom: 18px;
+            text-align: center;
+            border: 1px solid #C3E6CB;
+        }
+    </style>
+}
+
+<main class="auth-main-wrapper">
+    <div class="account-container">
+        <div class="account-header">
+            <h1>Đăng Nhập </h1>
+        </div>
+        <div class="account-content">
+            <div class="sub-title">Chào bạn quay lại</div>
+
+            @if (TempData["ThongBao"] != null)
+            {
+                <div class="alert-success">@TempData["ThongBao"]</div>
+            }
+
+            @using (Html.BeginForm("Login", "Home", new { returnUrl = ViewBag.ReturnUrl as string }, FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                if (!ViewData.ModelState.IsValid)
+                {
+                    @Html.ValidationSummary(true, null, new { @class = "alert-thongbao danger" })
+                }
+
+                <div class="form-row">
+                    @Html.LabelFor(m => m.Ten_Dang_Nhap, "Tên đăng nhập hoặc Email")
+                    @Html.TextBoxFor(m => m.Ten_Dang_Nhap, new { @class = "input-text", placeholder = "Tên đăng nhập hoặc email", autofocus = "autofocus" })
+                    @Html.ValidationMessageFor(m => m.Ten_Dang_Nhap)
+                </div>
+
+                <div class="form-row">
+                    @Html.LabelFor(m => m.Mat_Khau, "Mật khẩu")
+                    @Html.PasswordFor(m => m.Mat_Khau, new { @class = "input-text", placeholder = "Mật khẩu" })
+                    @Html.ValidationMessageFor(m => m.Mat_Khau)
+                </div>
+
+                <div class="form-row-login">
+                    <label class="remember-me">
+                        @Html.CheckBoxFor(m => m.RememberMe) <span>Ghi nhớ đăng nhập</span>
+                    </label>
+                    <button type="submit" class="login-button">Đăng nhập</button>
+                </div>
+
+                <div class="lost-password">
+                    Chưa có tài khoản? <a href="/Home/Register">Đăng ký ngay</a>
+                </div>
+            }
+        </div>
+    </div>
+</main>

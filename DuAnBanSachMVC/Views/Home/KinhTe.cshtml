@@ -1,0 +1,9 @@
+﻿@using DuAnBanSachMVC.Models@model List<Sach>
+@{
+    ViewBag.Title = "Kinh tế";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/Content/Category.css" />
+}
+@Html.Partial("_DanhMucBody", Model)

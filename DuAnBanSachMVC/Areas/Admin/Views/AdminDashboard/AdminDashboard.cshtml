@@ -1,0 +1,262 @@
+﻿@{
+    ViewBag.Title = "Trang Chủ Quản Trị";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --dark-color: #2F3E46;
+        --bg-light: #F8F9FA;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: var(--dark-color);
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    .card-stat {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        background-color: #fff;
+    }
+
+        .card-stat:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+    }
+
+    .icon-revenue {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #28a745;
+    }
+
+    .icon-books {
+        background-color: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+
+    .icon-reviews {
+        background-color: rgba(23, 162, 184, 0.1);
+        color: #17a2b8;
+    }
+
+    .icon-orders {
+        background-color: rgba(95, 159, 144, 0.1);
+        color: var(--primary-color);
+    }
+
+    .card-table {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+        background-color: #fff;
+    }
+
+    .table-dashboard th {
+        background-color: var(--bg-light);
+        color: #495057;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.5px;
+        border-bottom: 2px solid #E9ECEF;
+    }
+
+    .table-dashboard td {
+        padding: 14px;
+        vertical-align: middle;
+        border-bottom: 1px solid #E9ECEF;
+    }
+
+    .rating-stars {
+        color: #ffc107;
+    }
+</style>
+
+<div class="container-fluid px-4 mt-4">
+
+    <div class="mb-4">
+        <h2 class="page-title m-0">Bảng Điều Khiển Hệ Thống</h2>
+        <p class="text-muted m-0 mt-1">Chào mừng trở lại, Admin. Dưới đây là tổng hợp tình hình kinh doanh của Bookora Store hôm nay.</p>
+    </div>
+
+    <div class="row mb-4">
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card card-stat">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase font-weight-bold">Doanh thu tháng này</div>
+                        <h3 class="font-weight-bold my-2 text-dark">45,250,000đ</h3>
+                        <span class="text-success small font-weight-bold"><i class="fas fa-arrow-up mr-1"></i>+12.5%</span> <span class="text-muted small">so với tháng trước</span>
+                    </div>
+                    <div class="stat-icon icon-revenue">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card card-stat">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase font-weight-bold">Sách cần nhập kho</div>
+                        <h3 class="font-weight-bold my-2 text-danger">18 đầu sách</h3>
+                        <span class="text-muted small">Số lượng tồn kho dưới mức tối thiểu (10 cuốn)</span>
+                    </div>
+                    <div class="stat-icon icon-books">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card card-stat">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase font-weight-bold">Đánh giá của độc giả</div>
+                        <h3 class="font-weight-bold my-2 text-dark">128 phản hồi</h3>
+                        <span class="rating-stars font-weight-bold"><i class="fas fa-star mr-1"></i> 4.8 / 5.0</span> <span class="text-muted small">Điểm trung bình</span>
+                    </div>
+                    <div class="stat-icon icon-reviews">
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card card-stat">
+                <div class="card-body p-4 d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="text-muted small text-uppercase font-weight-bold">Đơn hàng chờ xử lý</div>
+                        <h3 class="font-weight-bold my-2 text-dark">14 đơn mới</h3>
+                        <span class="badge text-white px-2 py-1" style="background-color: var(--primary-color);">Cần duyệt gấp</span>
+                    </div>
+                    <div class="stat-icon icon-orders">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mb-5">
+
+        <div class="col-lg-7 mb-4">
+            <div class="card card-table h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="font-weight-bold text-dark m-0">
+                        <i class="fas fa-box-open text-muted mr-2"></i>Cảnh báo tồn kho & Cần nhập thêm
+                    </h5>
+                    <a href="@Url.Action("Index", "Sach")" class="btn btn-sm btn-outline-secondary" style="border-radius: 6px;">Xem tất cả</a>
+                </div>
+                <div class="card-body p-0 px-3 pb-3">
+                    <div class="table-responsive">
+                        <table class="table table-dashboard table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Tên Sách</th>
+                                    <th>Tác giả</th>
+                                    <th class="text-center">Còn lại</th>
+                                    <th class="text-center">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-weight-bold text-dark">Đắc Nhân Tâm</td>
+                                    <td>Dale Carnegie</td>
+                                    <td class="text-center text-danger font-weight-bold">2</td>
+                                    <td class="text-center"><span class="badge bg-danger text-white">Cạn kiệt</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold text-dark">Nhà Giả Kim</td>
+                                    <td>Paulo Coelho</td>
+                                    <td class="text-center text-warning font-weight-bold">5</td>
+                                    <td class="text-center"><span class="badge bg-warning text-dark">Sắp hết</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold text-dark">Mắt Biếc</td>
+                                    <td>Nguyễn Nhật Ánh</td>
+                                    <td class="text-center text-warning font-weight-bold">8</td>
+                                    <td class="text-center"><span class="badge bg-warning text-dark">Sắp hết</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5 mb-4">
+            <div class="card card-table h-100">
+                <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="font-weight-bold text-dark m-0">
+                        <i class="fas fa-comments text-muted mr-2"></i>Đánh giá gần đây
+                    </h5>
+                    <a href="#" class="btn btn-sm btn-outline-secondary" style="border-radius: 6px;">Quản lý</a>
+                </div>
+                <div class="card-body p-3">
+
+                    <div class="p-3 mb-2 bg-light rounded" style="border-left: 3px solid #ffc107;">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="font-weight-bold text-dark small">Nguyễn Văn A</span>
+                            <span class="rating-stars small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></span>
+                        </div>
+                        <p class="text-muted small m-0 italic">"Sách đóng gói rất cẩn thận, giao hàng nhanh, nội dung cực kỳ ý nghĩa và hay..."</p>
+                    </div>
+
+                    <div class="p-3 mb-2 bg-light rounded" style="border-left: 3px solid #ffc107;">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="font-weight-bold text-dark small">Trần Thị B</span>
+                            <span class="rating-stars small"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></span>
+                        </div>
+                        <p class="text-muted small m-0 italic">"Giao hàng đúng hẹn nhưng góc sách hơi bị nhăn một chút xíu, mong shop lưu ý bọc xốp dày hơn."</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <table>
+            @if (ViewBag.DanhSachSachCanNhap != null)
+            {
+                foreach (var item in (List<DuAnBanSachMVC.Models.Sach>)ViewBag.DanhSachSachCanNhap)
+                {
+                    <tr>
+                        <td class="font-weight-bold text-dark">@item.Ten_Sach</td>
+                        <td>@(item.Tac_Gia != null ? item.Tac_Gia.Ten_Tac_Gia : "Chưa cập nhật")</td>
+                        <td class="text-center text-danger font-weight-bold">@item.So_Luong_Ton</td>
+                        <td class="text-center">
+                            <span class="badge @(item.So_Luong_Ton == 0 ? "bg-danger text-white" : "bg-warning text-dark")">
+                                @(item.So_Luong_Ton == 0 ? "Cạn kiệt" : "Sắp hết")
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+       
+
+    </div>
+</div>

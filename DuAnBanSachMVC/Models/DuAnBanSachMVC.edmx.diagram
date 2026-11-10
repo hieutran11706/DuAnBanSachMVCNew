@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e5f50cf34ce3431e97a67ea45af79a08" Name="Diagram1" ZoomLevel="49">
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Chi_Tiet_Don_Hang" Width="1.5" PointX="5.25" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Danh_Gia" Width="1.5" PointX="7.5" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Don_Hang" Width="1.5" PointX="8.375" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Khach_Hang" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Phieu_Giam_Gia" Width="1.5" PointX="11.5" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Sach" Width="1.5" PointX="3" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.sysdiagram" Width="1.5" PointX="11.5" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Tac_Gia" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.The_Loai" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Vai_Tro" Width="1.5" PointX="0.5" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DuAnBanSachMVCModel.Yeu_Thich" Width="1.5" PointX="9.5" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_CTDH_DonHang" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_CTDH_Sach" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_DanhGia_ChiTietDonHang" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_DonHang_KhachHang" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_DonHang_PhieuGiamGia" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_KhachHang_VaiTro" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_YeuThich_KhachHang" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_Sach_TacGia" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_Sach_TheLoai" ManuallyRouted="false" />
+        <AssociationConnector Association="DuAnBanSachMVCModel.FK_YeuThich_Sach" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

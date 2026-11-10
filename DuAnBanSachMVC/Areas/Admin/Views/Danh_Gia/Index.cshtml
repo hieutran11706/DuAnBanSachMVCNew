@@ -1,0 +1,246 @@
+﻿@model IEnumerable<DuAnBanSachMVC.Models.Danh_Gia>
+
+@{
+    ViewBag.Title = "Quản Lý Đánh Giá Độc Giả";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+        width: 100%;
+    }
+
+    .table-responsive-custom {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .table-modern {
+        width: 100%;
+        margin-bottom: 0;
+        background-color: #fff;
+    }
+
+        .table-modern thead th {
+            background-color: #F8F9FA;
+            color: #495057;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            padding: 16px;
+            border-bottom: 2px solid #E9ECEF;
+            border-top: none;
+        }
+
+        .table-modern tbody td {
+            padding: 18px 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid #E9ECEF;
+            color: #495057;
+        }
+
+        .table-modern tbody tr:hover {
+            background-color: #FDFDFD;
+        }
+
+    .text-star {
+        color: #FFC107;
+        font-size: 14px;
+    }
+
+    .book-title-link {
+        color: #2F3E46;
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+        .book-title-link:hover {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+</style>
+
+<!-- Bung full chiều rộng container-fluid để khít khịt với Layout Admin -->
+<div class="container-fluid mt-4">
+
+    <!-- TIÊU ĐỀ HÀNG ĐẦU VỚI KHÔNG GIAN RỘNG -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title m-0">Hệ Thống Kiểm Duyệt Đánh Giá</h2>
+            <p class="text-muted m-0 mt-1">Quản lý các phản hồi, bình luận và số sao từ khách hàng trên toàn hệ thống.</p>
+        </div>
+    </div>
+
+    <!-- KHU VỰC THÔNG BÁO -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show card-custom mb-3" role="alert">
+            <i class="fas fa-check-circle mr-2"></i> @TempData["Success"]
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <!-- THANH BỘ LỌC TÌM KIẾM BUNG RỘNG TOÀN MÀN HÌNH -->
+    <div class="card card-custom mb-4">
+        <div class="card-body p-4">
+            @using (Html.BeginForm("Index", "Danh_Gia", FormMethod.Get, new { @class = "row align-items-center" }))
+            {
+                <div class="col-xl-5 col-lg-4 col-md-12 mb-3 mb-lg-0">
+                    <div class="input-group">
+                        
+                        <input type="text" name="searchString" class="form-control border-left-0"
+                               placeholder="Tìm nhanh theo tên độc giả, tên sách hoặc từ khóa bình luận..."
+                               value="@ViewBag.CurrentSearch" style="border-radius:  8px 8px ;" />
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 mb-3 mb-md-0">
+                    <select name="starFilter" class="form-control" style="border-radius: 8px; height: calc(2.25rem + 2px);">
+                        <option value="">-- Tất cả mức điểm sao --</option>
+                        <option value="5" @(ViewBag.CurrentStarFilter == 5 ? "selected" : "")>⭐⭐⭐⭐⭐ (5 Điểm)</option>
+                        <option value="4" @(ViewBag.CurrentStarFilter == 4 ? "selected" : "")>⭐⭐⭐⭐ (4 Điểm)</option>
+                        <option value="3" @(ViewBag.CurrentStarFilter == 3 ? "selected" : "")>⭐⭐⭐ (3 Điểm)</option>
+                        <option value="2" @(ViewBag.CurrentStarFilter == 2 ? "selected" : "")>⭐⭐ (2 Điểm)</option>
+                        <option value="1" @(ViewBag.CurrentStarFilter == 1 ? "selected" : "")>⭐ (1 Điểm)</option>
+                    </select>
+                </div>
+
+                <div class="col-xl-4 col-lg-4 col-md-6 text-lg-right">
+                    <button type="submit" class="btn text-white font-weight-bold px-4" style="background-color: var(--primary-color); border-radius: 8px;">
+                        <i class="fas fa-filter mr-2"></i>Áp dụng bộ lọc
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-light border font-weight-bold ml-2" style="border-radius: 8px;">
+                        <i class="fas fa-sync-alt mr-2"></i>Xóa bộ lọc
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- BẢNG DỮ LIỆU CHUẨN RỘNG LỚN -->
+    <div class="card card-custom mb-5">
+        <div class="card-body p-0">
+            <div class="table-responsive-custom">
+                <table class="table-modern">
+                    <thead>
+                        <tr>
+                            <th style="width: 18%; padding-left: 24px;">Khách hàng</th>
+                            <th style="width: 22%;">Sách được đánh giá</th>
+                            <th class="text-center" style="width: 12%;">Điểm số</th>
+                            <th style="width: 30%;">Nội dung bình luận</th>
+                            <th class="text-center" style="width: 10%;">Ngày gửi</th>
+                            <th class="text-center" style="width: 8%; padding-right: 24px;">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-5">
+                                    <i class="fas fa-comment-slash fa-3x text-light mb-3 d-block"></i>
+                                    Không tìm thấy dữ liệu đánh giá nào trong hệ thống.
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <!-- CỘT 1: THÔNG TIN KHÁCH HÀNG -->
+                                    <td style="padding-left: 24px;">
+                                        <div class="font-weight-bold text-dark mb-1">
+                                            @(item.Chi_Tiet_Don_Hang?.Don_Hang?.Khach_Hang?.Ho_Ten ?? "Ẩn danh")
+                                        </div>
+                                        <span class="text-muted small"><i class="fas fa-phone fa-xs mr-1"></i>@(item.Chi_Tiet_Don_Hang?.Don_Hang?.Khach_Hang?.So_Dien_Thoai ?? "Không có")</span>
+                                    </td>
+
+                                    <!-- CỘT 2: THÔNG TIN SÁCH -->
+                                    <td>
+                                        <div class="mb-1">
+                                            <span class="book-title-link">
+                                                @(item.Chi_Tiet_Don_Hang?.Sach?.Ten_Sach ?? "Sách không tồn tại")
+                                            </span>
+                                        </div>
+                                        <span class="badge badge-light border text-muted px-2 py-1" style="font-size: 11px;">Mã sách: @item.Chi_Tiet_Don_Hang?.Saches?.Ma_Sach</span>
+                                    </td>
+
+                                    <!-- CỘT 3: ĐỒ HỌA SAO VÀNG -->
+                                    <td class="text-center">
+                                        <div class="text-star mb-1">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= item.So_Sao)
+                                                {
+                                                    <i class="fas fa-star"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="far fa-star text-muted"></i>
+                                                }
+                                            }
+                                        </div>
+                                        <span class="small font-weight-bold text-secondary">(@item.So_Sao/5)</span>
+                                    </td>
+
+                                    <!-- CỘT 4: NỘI DUNG BÌNH LUẬN -->
+                                    <td>
+                                        <div class="text-secondary small" style="line-height: 1.5; max-height: 55px; overflow-y: auto;">
+                                            @if (string.IsNullOrEmpty(item.Binh_luan))
+                                            {
+                                                <span class="text-muted italic"><i class="far fa-edit mr-1"></i>Chỉ chấm điểm, không viết bình luận.</span>
+                                            }
+                                            else
+                                            {
+                                                @item.Binh_luan
+                                            }
+                                        </div>
+                                    </td>
+
+                                    <!-- CỘT 5: NGÀY GỬI -->
+                                    <td class="text-center text-muted small">
+                                        @item.Ngay_Danh_Gia.ToString("dd/MM/yyyy")
+                                    </td>
+
+                                    <!-- CỘT 6: CÁC NÚT ĐIỀU HƯỚNG & KIỂM DUYỆT -->
+                                    <td class="text-center" style="padding-right: 24px;">
+                                        @using (Html.BeginForm("Delete", "Danh_Gia", new { id = item.Ma_Danh_Gia }, FormMethod.Post, new { @class = "d-inline" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            <!-- Nút Xem chi tiết kiêm trang xóa lớn -->
+                                            <a href="@Url.Action("Delete", new { id = item.Ma_Danh_Gia })" class="btn btn-sm btn-outline-info border-0 mr-1" title="Xem chi tiết kiểm duyệt">
+                                                <i class="fas fa-eye fa-lg"></i>
+                                            </a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

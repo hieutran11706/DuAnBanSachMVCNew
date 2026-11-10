@@ -1,0 +1,155 @@
+﻿@model DuAnBanSachMVC.Models.Vai_Tro
+
+@{
+    ViewBag.Title = "Xóa Vai Trò";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90; /* Xanh ngọc chủ đạo */
+        --primary-hover: #4A8376; /* Xanh ngọc đậm */
+        --danger-color: #e74c3c; /* Đỏ cảnh báo */
+        --danger-hover: #c0392b;
+        --bg-light: #F8F9FA;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 22px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    /* Định dạng danh sách thông tin */
+    .info-label {
+        font-weight: 600;
+        color: #6c757d;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2F3E46;
+    }
+
+    /* Nút Xóa (Đỏ nổi bật trên nền trắng/xám nhẹ) */
+    .btn-delete-confirm {
+        background-color: var(--danger-color) !important;
+        color: #ffffff !important;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-delete-confirm:hover {
+            background-color: var(--danger-hover) !important;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.2);
+            transform: translateY(-1px);
+        }
+
+    /* Nút Quay lại (Viền xanh ngọc) */
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent;
+        color: var(--primary-color) !important;
+        border: 1.5px solid var(--primary-color);
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-back:hover {
+            background-color: var(--primary-color);
+            color: #ffffff !important;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(95, 159, 144, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-back:active {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(0);
+        }
+</style>
+
+<div class="container mt-4" style="max-width: 650px;">
+    <!-- Tiêu đề trang -->
+    <div class="mb-4">
+        <h2 class="page-title m-0">Xóa Vai Trò</h2>
+        <p class="text-muted m-0 mt-1 small">Hành động này không thể hoàn tác nếu vai trò đã bị xóa.</p>
+    </div>
+
+    <!-- Hộp cảnh báo xác nhận xóa -->
+    <div class="alert alert-warning border-0 shadow-sm d-flex align-items-center mb-4" style="border-radius: 10px; background-color: #FFF3CD;">
+        <i class="fa-solid fa-triangle-exclamation text-warning fa-2x me-3"></i>
+        <div>
+            <h5 class="alert-heading font-weight-bold mb-1" style="color: #856404;">Bạn có chắc chắn muốn xóa vai trò này?</h5>
+            <p class="mb-0 small" style="color: #856404;">Hãy chắc chắn rằng không có tài khoản nào đang được gán vai trò này trước khi thực hiện xóa.</p>
+        </div>
+    </div>
+
+    <!-- Chi tiết thông tin vai trò -->
+    <div class="card card-custom mb-4">
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-sm-4 info-label align-self-center">
+                    Mã số vai trò
+                </div>
+                <div class="col-sm-8 info-value align-self-center">
+                    <!-- Hiển thị ID vai trò trong một khung nhỏ gọn gàng -->
+                    <span class="badge px-3 py-2" style="background-color: #E6F2F0; color: var(--primary-color); font-family: monospace; font-size: 15px;">
+                        @Html.DisplayFor(model => model.Ma_Vai_Tro)
+                    </span>
+                </div>
+            </div>
+
+            <hr class="my-3" style="border-color: #eee;" />
+
+            <div class="row">
+                <div class="col-sm-4 info-label align-self-center">
+                    Tên vai trò
+                </div>
+                <div class="col-sm-8 info-value align-self-center">
+                    @Html.DisplayFor(model => model.Ten_Vai_Tro)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form gửi yêu cầu Xóa -->
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Nút Quay lại -->
+            <a href="@Url.Action("Index")" class="btn-back">
+                <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+            </a>
+
+            <!-- Nút Xác nhận Xóa -->
+            <button type="submit" class="btn btn-delete-confirm shadow-sm">
+                <i class="fa-solid fa-trash-can me-2"></i> Xác nhận xóa
+            </button>
+        </div>
+    }
+</div>

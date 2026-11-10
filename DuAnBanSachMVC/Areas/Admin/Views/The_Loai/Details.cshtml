@@ -1,0 +1,123 @@
+﻿@model DuAnBanSachMVC.Models.The_Loai
+
+@{
+    ViewBag.Title = "Chi Tiết Thể Loại";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    /* Khung bọc thông tin giống trang Create/Delete */
+    .form-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+        padding: 30px;
+        max-width: 700px;
+    }
+
+    .form-label-custom {
+        font-weight: 600;
+        color: #2F3E46;
+        margin-bottom: 8px;
+    }
+
+    /* Vùng hiển thị text tĩnh dạng khung phẳng */
+    .display-custom {
+        border: 1.5px solid #E0E7E5 !important;
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
+        background-color: var(--bg-light);
+        color: #495057;
+        min-height: 45px;
+    }
+
+    /* Nút Chỉnh sửa màu xanh chủ đạo giống trang Create */
+    .btn-edit-custom {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 20px !important;
+        padding: 10px 25px !important;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: background 0.2s;
+    }
+
+        .btn-edit-custom:hover {
+            background-color: var(--primary-hover) !important;
+            color: #fff !important;
+        }
+
+    /* Nút quay lại */
+    .btn-back {
+        color: #666 !important;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: color 0.2s;
+    }
+
+        .btn-back:hover {
+            color: var(--primary-color) !important;
+        }
+</style>
+
+<div class="container mt-4">
+    <h2 class="page-title">Chi Tiết Thể Loại</h2>
+
+    <div class="form-card">
+        <div class="form-horizontal">
+
+            <div class="form-group mb-4">
+                <label class="form-label-custom col-md-12">Tên Thể Loại</label>
+                <div class="col-md-12">
+                    <div class="display-custom">
+                        @Html.DisplayFor(model => model.Ten_The_Loai)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-4">
+                <label class="form-label-custom col-md-12">Mô Tả Chi Tiết</label>
+                <div class="col-md-12">
+                    <div class="display-custom">
+                        @(string.IsNullOrEmpty(Model.Mo_Ta) ? "Chưa có mô tả chi tiết cho thể loại này." : Model.Mo_Ta)
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mt-4">
+                <div class="col-md-12 d-flex align-items-center justify-content-between">
+                    <a href="@Url.Action("Index")" class="btn-back">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                    </a>
+
+                    <a href="@Url.Action("Edit", new { id = Model.Ma_The_Loai })" class="btn-edit-custom">
+                        <i class="fa-solid fa-pen-to-square me-1"></i> Chỉnh Sửa
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

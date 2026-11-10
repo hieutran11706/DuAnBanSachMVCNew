@@ -1,0 +1,102 @@
+﻿@model DuAnBanSachMVC.Models.Khach_Hang
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --dark-color: #2F3E46;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: var(--dark-color);
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+        width: 100%;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #6c757d;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--dark-color);
+    }
+
+    .btn-custom-edit {
+        background-color: var(--primary-color);
+        color: white !important;
+        font-weight: 600;
+        border-radius: 20px;
+        padding: 8px 25px;
+        transition: all 0.2s;
+    }
+
+        .btn-custom-edit:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(95, 159, 144, 0.2);
+        }
+
+    .btn-custom-back {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-weight: 600;
+        color: #6c757d !important;
+        border: 1.5px solid #6c757d;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom-back:hover {
+            background-color: #6c757d;
+            color: #fff !important;
+        }
+</style>
+
+<div class="container-fluid px-4 mt-4" style="max-width: 900px;">
+    <div class="mb-4">
+        <h2 class="page-title m-0">Hồ Sơ Chi Tiết Thành Viên</h2>
+        <p class="text-muted m-0 mt-1">Xem toàn bộ thông tin tài khoản và lịch sử tham gia của khách hàng.</p>
+    </div>
+
+    <div class="card card-custom mb-4">
+        <div class="card-header bg-white border-0 pt-4 px-4">
+            <h5 class="font-weight-bold text-dark m-0">
+                <i class="fas fa-id-card text-muted mr-2"></i>Thông tin tài khoản hệ thống
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            @Html.Partial("_ThongTinKhachHangPartial", Model)
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <a href="@Url.Action("Index")" class="btn-custom-back">
+            <i class="fas fa-arrow-left mr-2"></i> Quay lại danh sách
+        </a>
+        <a href="@Url.Action("Edit", new { id = Model.Ma_Khach_Hang })" class="btn btn-custom-edit shadow-sm">
+            <i class="fas fa-user-edit mr-2"></i> Thay đổi thông tin
+        </a>
+    </div>
+</div>

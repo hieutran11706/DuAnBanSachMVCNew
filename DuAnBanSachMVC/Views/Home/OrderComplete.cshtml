@@ -1,0 +1,58 @@
+﻿@model Don_Hang
+@{
+    ViewBag.Title = "Complete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/Content/order-complete.css" />
+}
+<main>
+    <div class="order-complete">
+        <nav aria-label="breadcrumb">
+            <ul class="breadcrumbs">
+                <li><a href="/Home/ShoppingCart">Shopping Cart</a></li>
+                <li><a href="/Home/CheckOutDetails">Checkout details</a></li>
+                <li><a href="/Home/OrderComplete" class="active">Order Complete</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="order-complete-container">
+        <p class="thank-you-message">Cảm ơn bạn! Đơn hàng #@Model.Ma_Don_Hang đã được ghi nhận.</p>
+
+        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+            <thead>
+                <tr>
+                    <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px 0;">Sản phẩm</th>
+                    <th style="text-align:center; border-bottom:1px solid #ccc; padding:8px 0;">SL</th>
+                    <th style="text-align:right; border-bottom:1px solid #ccc; padding:8px 0;">Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ct in Model.Chi_Tiet_Don_Hang)
+                {
+                    <tr>
+                        <td style="padding:8px 0; border-bottom:1px solid #ddd;">@(ct.Sach != null ? ct.Sach.Ten_Sach : "Sách #" + ct.Ma_Sach)</td>
+                        <td style="text-align:center; padding:8px 0; border-bottom:1px solid #ddd;">@ct.So_Luong</td>
+                        <td style="text-align:right; padding:8px 0; border-bottom:1px solid #ddd;">@((ct.Gia_Luc_Mua * ct.So_Luong).DinhDangTien())</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div style="margin-top:15px; text-align:right;">
+            <p>Tạm tính: @Model.Tong_Tien.DinhDangTien()</p>
+            @if (Model.Tien_Giam_Gia > 0)
+            {
+                <p>Giảm giá: -@Model.Tien_Giam_Gia.DinhDangTien()</p>
+            }
+            <p style="font-weight:bold; font-size:18px;">Tổng thanh toán: @Model.Thanh_Tien.DinhDangTien()</p>
+        </div>
+
+        <div style="margin-top:15px;">
+            <p><b>Địa chỉ giao hàng:</b> @Model.Dia_Chi_Giao_Hang</p>
+            <p><b>Trạng thái:</b> @Model.Trang_Thai</p>
+        </div>
+
+        <a href="/Home/HomePage" style="display:inline-block; margin-top:20px; color:#c9642c;">← Tiếp tục mua sắm</a>
+    </div>
+</main>

@@ -1,0 +1,218 @@
+﻿@model DuAnBanSachMVC.Models.Sach
+
+@{
+    ViewBag.Title = "Chỉnh Sửa Sách";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    /* Khung bọc form */
+    .form-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+        padding: 30px;
+        max-width: 850px;
+    }
+
+    .form-label-custom {
+        font-weight: 600;
+        color: #2F3E46;
+        margin-bottom: 6px;
+    }
+
+    /* Custom input ô nhập liệu và dropdown */
+    .input-custom {
+        border: 1.5px solid #E0E7E5 !important;
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
+        height: auto !important;
+        transition: all 0.2s;
+    }
+
+        .input-custom:focus {
+            border-color: var(--primary-color) !important;
+            box-shadow: 0 0 0 0.2rem rgba(95, 159, 144, 0.15) !important;
+        }
+
+    /* Nút lưu dữ liệu */
+    .btn-submit-custom {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 20px !important;
+        padding: 10px 25px !important;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+
+        .btn-submit-custom:hover {
+            background-color: var(--primary-hover) !important;
+        }
+
+    /* Nút quay lại */
+    .btn-back {
+        color: #666 !important;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: color 0.2s;
+    }
+
+        .btn-back:hover {
+            color: var(--primary-color) !important;
+        }
+</style>
+
+<div class="container mt-4">
+    <h2 class="page-title">Cập Nhật Thông Tin Sách</h2>
+
+    <div class="form-card">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                @Html.HiddenFor(model => model.Ma_Sach)
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Tên Sách</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Ten_Sach, new { htmlAttributes = new { @class = "form-control input-custom", placeholder = "Nhập tên cuốn sách..." } })
+                                @Html.ValidationMessageFor(model => model.Ten_Sach, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Thể Loại</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Ma_The_Loai", null, htmlAttributes: new { @class = "form-control input-custom" })
+                                    @Html.ValidationMessageFor(model => model.Ma_The_Loai, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Tác Giả</label>
+                                <div class="col-md-12">
+                                    @Html.DropDownList("Ma_Tac_Gia", null, htmlAttributes: new { @class = "form-control input-custom" })
+                                    @Html.ValidationMessageFor(model => model.Ma_Tac_Gia, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Giá Bán (đ)</label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.Gia_Ban, new { htmlAttributes = new { @class = "form-control input-custom", type = "number", placeholder = "Ví dụ: 85000" } })
+                                    @Html.ValidationMessageFor(model => model.Gia_Ban, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Số Lượng Tồn Kho</label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.So_Luong_Ton, new { htmlAttributes = new { @class = "form-control input-custom", type = "number", placeholder = "Ví dụ: 50" } })
+                                    @Html.ValidationMessageFor(model => model.So_Luong_Ton, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Nhà Xuất Bản</label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.Nha_Xuat_Ban, new { htmlAttributes = new { @class = "form-control input-custom", placeholder = "Ví dụ: NXB Kim Đồng..." } })
+                                    @Html.ValidationMessageFor(model => model.Nha_Xuat_Ban, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Ngày Xuất Bản</label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.Ngay_Xuat_Ban, new { htmlAttributes = new { @class = "form-control input-custom", type = "date", Value = Model.Ngay_Xuat_Ban.HasValue ? Model.Ngay_Xuat_Ban.Value.ToString("yyyy-MM-dd") : "" } })
+                                    @Html.ValidationMessageFor(model => model.Ngay_Xuat_Ban, "", new { @class = "text-danger small mt-1 d-block" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Đường Dẫn Ảnh Bìa (URL)</label>
+                            <div class="col-md-12">
+                                @Html.EditorFor(model => model.Anh_Bia_Url, new { htmlAttributes = new { @class = "form-control input-custom", id = "txt-image-url", placeholder = "Dán link hình ảnh vào đây..." } })
+                                @Html.ValidationMessageFor(model => model.Anh_Bia_Url, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                            <div class="col-md-12 mt-2 text-center">
+                                <img id="img-preview" src="@(string.IsNullOrEmpty(Model.Anh_Bia_Url) ? "https://via.placeholder.com/120x160?text=No+Image" : Model.Anh_Bia_Url)" style="max-height: 140px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); object-fit: cover;" alt="Preview" />
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Mô Tả Nội Dung</label>
+                            <div class="col-md-12">
+                                @Html.TextAreaFor(model => model.Mo_Ta, new { @class = "form-control input-custom", rows = "3", placeholder = "Tóm tắt ngắn gọn nội dung cuốn sách..." })
+                                @Html.ValidationMessageFor(model => model.Mo_Ta, "", new { @class = "text-danger small mt-1 d-block" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-4" />
+
+                <div class="form-group mb-0 mt-3">
+                    <div class="col-md-12 d-flex align-items-center justify-content-between">
+                        <a href="@Url.Action("Index")" class="btn-back">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                        </a>
+
+                        <button type="submit" class="btn btn-submit-custom">
+                            <i class="fa-solid fa-floppy-disk me-1"></i> Lưu Thay Đổi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+            $("#txt-image-url").on("input change", function () {
+                var url = $(this).val();
+                if (url.trim() !== "") {
+                    $("#img-preview").attr("src", url);
+                } else {
+                    $("#img-preview").attr("src", "https://via.placeholder.com/120x160?text=No+Image");
+                }
+            });
+        });
+    </script>
+}

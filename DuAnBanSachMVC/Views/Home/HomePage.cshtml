@@ -1,0 +1,216 @@
+﻿@using DuAnBanSachMVC.Models @* Đảm bảo project nhận diện class Sach trong helper *@
+@{
+    ViewBag.Title = "HomePage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Các CDN Font chữ và Icon cần thiết -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+@section Styles{
+    <link rel="stylesheet" href="@Url.Content("~/Content/HomePage.css")" />
+
+    <style>
+        /* Hệ màu và font chữ phong cách độc bản cho trang chủ */
+        :root {
+            --ink: #1C2B45;
+            --paper: #F6F1E4;
+            --paper-deep: #EDE5CF;
+            --gold: #D6A419;
+            --burgundy: #7B2635;
+            --sage: #5F7A5B;
+            --white: #FFFDF8;
+        }
+
+        .homepage-wrapper {
+            background: var(--paper);
+            color: var(--ink);
+            font-family: 'Manrope', sans-serif;
+            line-height: 1.55;
+            padding-bottom: 40px;
+            margin-top: -20px; /* Bù trừ khoảng trống nếu có với header */
+        }
+
+        .homepage-wrapper h1,
+        .homepage-wrapper .shelf-section-title {
+            font-family: 'Fraunces', serif;
+            color: var(--ink);
+        }
+
+        .homepage-wrapper .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: .14em;
+            font-size: .75rem;
+            font-weight: 700;
+            color: var(--burgundy);
+            margin-bottom: 10px;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero-vintage { padding: 60px 0; }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 50px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .hero-vintage h1 { font-size: 3rem; line-height: 1.1; margin: 10px 0 20px; font-weight: 600; text-align: left; }
+        .hero-vintage h1 em { font-style: italic; color: var(--burgundy); }
+        .hero-vintage p { font-size: 1.05rem; max-width: 460px; color: #3c4a63; margin-bottom: 30px; text-align: left; }
+
+        /* Search Bar nhỏ gọn trong Hero */
+        .search-bar-vintage {
+            display: flex; align-items: center; gap: 10px;
+            background: var(--white); border-radius: 999px; padding: 6px 6px 6px 20px;
+            box-shadow: 0 12px 30px rgba(28,43,69,.08); max-width: 460px;
+        }
+        .search-bar-vintage input { border: none; outline: none; flex: 1; font-family: 'Manrope'; font-size: .95rem; background: transparent; height: 40px; }
+        .search-bar-vintage button { border: none; background: var(--gold); color: var(--ink); font-weight: 700; padding: 10px 22px; border-radius: 999px; cursor: pointer; transition: 0.2s; }
+        .search-bar-vintage button:hover { opacity: 0.9; }
+
+        /* Kệ sách 3D CSS */
+        .shelf-wrap { position: relative; height: 350px; display: flex; align-items: flex-end; justify-content: center; }
+        .shelf-ledge {
+            position: absolute; bottom: 20px; left: 2%; right: 2%; height: 12px;
+            background: var(--ink); border-radius: 3px; box-shadow: 0 15px 25px rgba(28,43,69,.3);
+        }
+        .shelf-books { position: relative; display: flex; align-items: flex-end; gap: 8px; padding-bottom: 32px; z-index: 2; }
+        .spine {
+            width: 44px; border-radius: 5px 5px 2px 2px; display: flex; align-items: flex-end; justify-content: center;
+            padding-bottom: 15px; box-shadow: inset 0 -14px 20px rgba(0,0,0,.15);
+            transition: transform .25s ease; cursor: pointer;
+        }
+        .spine:hover { transform: translateY(-12px) rotate(0deg) !important; }
+        .spine span {
+            writing-mode: vertical-rl; color: var(--white); font-weight: 700; font-size: .75rem;
+            letter-spacing: .05em; text-transform: uppercase; transform: rotate(180deg);
+        }
+        .spine.h1 { height: 240px; background: var(--burgundy); transform: rotate(-3deg); }
+        .spine.h2 { height: 270px; background: var(--gold); color: var(--ink); transform: rotate(2deg); }
+        .spine.h3 { height: 220px; background: var(--ink); transform: rotate(-1deg); }
+        .spine.h4 { height: 260px; background: var(--sage); transform: rotate(3deg); }
+        .spine.h5 { height: 200px; background: #B9CBD1; transform: rotate(-4deg); }
+        .spine.h5 span { color: var(--ink); }
+
+        .floating-tag {
+            position: absolute; top: 10px; right: 5%; background: var(--white); border-radius: 12px;
+            padding: 10px 16px; box-shadow: 0 10px 25px rgba(28,43,69,.1); font-size: .85rem; font-weight: 700;
+            display: flex; align-items: center; gap: 8px; z-index: 3;
+        }
+        .floating-tag .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); }
+
+        /* ===== CATEGORY STRIP ===== */
+        .categories-vintage { padding: 10px 0 30px; }
+        .cat-container { max-width: 1200px; margin: 0 auto; padding: 0 15px; }
+        .cat-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-start; }
+        .cat-chip {
+            background: var(--white); border: 1.5px solid var(--paper-deep); border-radius: 999px;
+            padding: 10px 20px; font-weight: 700; font-size: .9rem; color: var(--ink); text-decoration: none; transition: .2s;
+        }
+        .cat-chip:hover { border-color: var(--burgundy); color: var(--burgundy); background: var(--white); text-decoration: none; }
+
+        .section-divider { border: 0; border-top: 1px solid rgba(28,43,69,.08); margin: 20px 0 40px; }
+
+        @@media (max-width: 850px){
+            .hero-grid { grid-template-columns: 1fr; gap: 30px; text-align: center; }
+            .hero-vintage h1, .hero-vintage p { text-align: center; margin-left: auto; margin-right: auto; }
+            .search-bar-vintage { margin: 0 auto; }
+        }
+    </style>
+}
+
+<div class="homepage-wrapper">
+    <!-- PHẦN 1: HERO KỆ SÁCH NGHIÊNG THAY THẾ BANNER CŨ -->
+    <section class="hero-vintage">
+        <div class="hero-grid">
+            <div>
+                <div class="eyebrow">Hiệu sách trực tuyến Bookara</div>
+                <h1>Đọc một trang,<br><em>sống một đời</em> khác.</h1>
+                <p>Hàng nghìn đầu sách được tuyển chọn kỹ lưỡng từ văn học, kinh tế, tâm lý học đến kỹ năng sống. Bắt đầu hành trình của bạn ngay hôm nay.</p>
+
+                <div class="search-bar-vintage">
+                    <form action="/Home/Search" method="get" style="display:inline-flex; flex:1;">
+                        <input type="text" name="q" placeholder="Tìm kiếm tên sách, tác giả, nhà xuất bản..." required>
+                        <button type="submit">Tìm sách</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="shelf-wrap">
+                <div class="floating-tag">
+                    <span class="dot"></span>
+                    Tinh Hoa Tri Thức
+                </div>
+                <div class="shelf-books">
+                    <a href="#VanHoc" class="spine h1"><span>Văn Học</span></a>
+                    <a href="#TamLy" class="spine h2"><span>Tâm Lý</span></a>
+                    <a href="#KhoaHoc" class="spine h3"><span>Khoa Học</span></a>
+                    <a href="#KinhTe" class="spine h4"><span>Kinh Tế</span></a>
+                    <a href="#Self-Help" class="spine h5"><span>Self-Help</span></a>
+                </div>
+                <div class="shelf-ledge"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PHẦN 2: THANH THỂ LOẠI CHIPS MỚI -->
+    <section class="categories-vintage">
+        <div class="cat-container">
+            <div class="cat-row">
+                <a class="cat-chip" href="#KhoaHoc">Khoa Học</a>
+                <a class="cat-chip" href="#TamLy">Tâm Lý Học</a>
+                <a class="cat-chip" href="#VanHoc">Văn Học</a>
+                <a class="cat-chip" href="#KinhTe">Kinh Tế</a>
+                <a class="cat-chip" href="#Self-Help">Self-help</a>
+            </div>
+        </div>
+    </section>
+
+    <hr class="section-divider" />
+
+    <!-- PHẦN 3: GIỮ NGUYÊN HOÀN TOÀN CÁC SLIDER VÀ HELPER CŨ CỦA BẠN -->
+    <main>
+        @RenderSlider("BestSeller", "Sách bán chạy", ViewBag.SachBanChay)
+        @RenderSlider("KhoaHoc", "Khoa Học", ViewBag.SachKhoaHoc)
+        @RenderSlider("TamLy", "Tâm Lý Học", ViewBag.SachTamLy)
+        @RenderSlider("VanHoc", "Văn học", ViewBag.SachVanHoc)
+        @RenderSlider("KinhTe", "Kinh Tế", ViewBag.SachKinhTe)
+        @RenderSlider("Self-Help", "Self-help", ViewBag.SachSelfHelp)
+
+        <script src="~/Scripts/HomePage.js"></script>
+    </main>
+</div>
+
+@helper RenderSlider(string sectionId, string title, List<Sach> saches)
+{
+    <div id="@sectionId" class="slider-section">
+        <h2 class="shelf-section-title">@title</h2>
+        @if (saches == null || !saches.Any())
+        {
+            <p style="padding: 10px 0; color:#777;">Chưa có sách nào trong mục này.</p>
+        }
+        else
+        {
+            var trangs = saches.ChunkBy(3);
+            <div class="slides">
+                @for (int i = 0; i < trangs.Count; i++)
+                {
+                    <div class="slides-page @(i == 0 ? "show" : "")">
+                        @foreach (var sach in trangs[i])
+                        {
+                            @Html.Partial("_SliderBookCard", sach)
+                        }
+                    </div>
+                }
+            </div>
+            <button class="clickLeft">←</button>
+            <button class="clickRight">→</button>
+        }
+    </div>
+}

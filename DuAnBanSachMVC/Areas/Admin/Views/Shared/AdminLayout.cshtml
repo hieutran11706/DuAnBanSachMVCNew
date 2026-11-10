@@ -1,0 +1,236 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Bookora Store</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/dist/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        :root {
+            --primary-color: #5F9F90;
+            --primary-hover: #4A8376;
+            --text-dark: #2F3E46;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-color: #fff;
+        }
+
+        /* Tùy chỉnh thanh Navbar trắng, viền mảnh */
+        .navbar-custom {
+            background-color: #ffffff !important;
+            border-bottom: 1px solid #E0E7E5;
+            padding: 12px 0;
+        }
+
+        .navbar-brand-custom {
+            font-weight: 700;
+            font-size: 24px;
+            color: #000000 !important;
+            text-decoration: none;
+        }
+
+            .navbar-brand-custom span {
+                color: var(--primary-color);
+            }
+
+        /* Thanh tìm kiếm bo góc ở giữa */
+        .search-container {
+            flex-grow: 1;
+            max-width: 400px;
+            margin: 0 20px;
+        }
+
+        .search-input {
+            border: 1.5px solid #E0E7E5 !important;
+            border-radius: 20px !important;
+            padding: 6px 16px 6px 40px !important;
+            position: relative;
+        }
+
+            .search-input:focus {
+                border-color: var(--primary-color) !important;
+                box-shadow: 0 0 0 0.2rem rgba(95, 159, 144, 0.15) !important;
+            }
+
+        /* Menu điều hướng */
+        .nav-link-custom {
+            color: #555555 !important;
+            font-weight: 500;
+            margin-right: 5px;
+            transition: color 0.2s;
+        }
+
+            .nav-link-custom:hover, .dropdown-item-custom:hover {
+                color: var(--primary-color) !important;
+            }
+
+        /* Tùy chỉnh menu dropdown gọn gàng */
+        .dropdown-menu-custom {
+            border: none !important;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-radius: 12px !important;
+            padding: 10px 0;
+            margin-top: 10px !important;
+        }
+
+        .dropdown-item-custom {
+            font-weight: 500;
+            color: #555555 !important;
+            padding: 8px 20px !important;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+            .dropdown-item-custom:hover {
+                background-color: #F4F8F7 !important;
+            }
+
+            .dropdown-item-custom i {
+                width: 20px;
+                text-align: center;
+            }
+
+        /* Icon giỏ hàng và tài khoản góc phải */
+        .nav-icon {
+            color: #333;
+            font-size: 18px;
+            margin-left: 15px;
+            text-decoration: none;
+            position: relative;
+        }
+
+            .nav-icon:hover {
+                color: var(--primary-color);
+            }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            padding: 30px 0;
+            border-top: 1px solid #E0E7E5;
+            background-color: #F4F8F7;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-custom sticky-top">
+        <div class="container">
+            <a href="@Url.Action("Dashboard", "Home", new { area = "Admin" })" class="navbar-brand-custom">
+                Bookora<span>.</span>
+            </a>
+
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-between">
+                <div class="search-container d-none d-md-block">
+                    <form action="@Url.Action("Search", "Home")" method="get" class="position-relative">
+                        <i class="fa-solid fa-magnifying-glass position-absolute" style="left: 15px; top: 12px; color: #a0a0a0;"></i>
+                        <input type="text" name="query" class="form-control search-input" placeholder="What are you searching for?" />
+                    </form>
+                </div>
+
+                <ul class="navbar-nav align-items-center">
+                    <li>
+                        @Html.ActionLink("Trang chủ", "Dashboard", "Home", new { area = "Admin" }, new { @class = "nav-link nav-link-custom" })
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-link-custom dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-cogs mr-1"></i> Quản lý hệ thống
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-custom dropdown-menu-end" aria-labelledby="navbarDropdownAdmin">
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "Sach", new { area = "Admin" })">
+                                    <i class="fas fa-book text-secondary mr-2"></i> Quản lý Sách
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "The_Loai", new { area = "Admin" })">
+                                    <i class="fas fa-tags text-secondary mr-2"></i> Quản lý Thể loại
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "Tac_Gia", new { area = "Admin" })">
+                                    <i class="fas fa-feather-alt text-secondary mr-2"></i> Quản lý Tác giả
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" style="border-color: #E0E7E5;"></li>
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "Don_Hang", new { area = "Admin" })">
+                                    <i class="fas fa-shopping-cart text-secondary mr-2"></i> Quản lý Đơn hàng
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "Phieu_Giam_Gia", new { area = "Admin" })">
+                                    <i class="fas fa-ticket-alt text-secondary mr-2"></i> Quản lý Mã giảm giá
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider" style="border-color: #E0E7E5;"></li>
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "Khach_Hang", new { area = "Admin" })">
+                                    <i class="fas fa-users text-secondary mr-2"></i> Quản lý Khách hàng
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "Vai_tro", new { area = "Admin" })">
+                                    <i class="fas fa-user-shield text-secondary mr-2"></i> Cấu hình Vai trò
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item dropdown-item-custom" href="@Url.Action("Index", "Danh_Gia", new { area = "Admin" })">
+                                    <i class="fas fa-user-shield text-secondary mr-2"></i> Quản lý đánh giá
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    <a href="#" class="nav-icon" title="Yêu thích"><i class="fa-regular fa-heart"></i></a>
+                    <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fa-solid fa-bag-shopping"></i></a>
+                    <a href="#" class="nav-icon" style="font-size: 14px; font-weight: 500; margin-left: 20px;"><i class="fa-regular fa-user me-1"></i> Login</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content mt-4" style="min-height: 70vh;">
+        @RenderBody()
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Bookora Store</h5>
+                    <p class="text-muted">&copy; @DateTime.Now.Year - Dự án quản lý bán sách MVC sử dụng Entity Framework.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <h5>Thông tin nhóm</h5>
+                    <p class="text-muted mb-1"><i class="fa-solid fa-users me-1"></i> Thành viên thực hiện dự án</p>
+                    <small class="text-muted">Hỗ trợ kỹ thuật & kết nối Database tự động</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

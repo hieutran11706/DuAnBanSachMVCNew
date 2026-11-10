@@ -1,0 +1,207 @@
+﻿@model DuAnBanSachMVC.Models.Sach
+
+@{
+    ViewBag.Title = "Xóa Sách";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --danger-color: #D9534F;
+        --danger-hover: #C9302C;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--danger-color);
+        padding-left: 15px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    /* Khung bọc form giống trang Create */
+    .form-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+        padding: 30px;
+        max-width: 850px;
+    }
+
+    .form-label-custom {
+        font-weight: 600;
+        color: #2F3E46;
+        margin-bottom: 6px;
+    }
+
+    /* Vùng hiển thị text tĩnh phẳng bo góc */
+    .display-custom {
+        border: 1.5px solid #E0E7E5 !important;
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
+        background-color: var(--bg-light);
+        color: #495057;
+        min-height: 45px;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Nút xác nhận xóa */
+    .btn-delete-custom {
+        background-color: var(--danger-color) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 20px !important;
+        padding: 10px 25px !important;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+
+        .btn-delete-custom:hover {
+            background-color: var(--danger-hover) !important;
+        }
+
+    /* Nút quay lại */
+    .btn-back {
+        color: #666 !important;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: color 0.2s;
+    }
+
+        .btn-back:hover {
+            color: var(--primary-color) !important;
+        }
+</style>
+
+<div class="container mt-4">
+    <h2 class="page-title">Xóa Sách Khỏi Hệ Thống</h2>
+    <p class="text-muted mb-4 font-weight-bold">Bạn có chắc chắn muốn xóa cuốn sách này? Hành động này không thể hoàn tác.</p>
+
+    <div class="form-card">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Tên Sách</label>
+                            <div class="col-md-12">
+                                <div class="display-custom font-weight-bold text-gray-800">
+                                    @Html.DisplayFor(model => model.Ten_Sach)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Thể Loại</label>
+                                <div class="col-md-12">
+                                    <div class="display-custom">
+                                        @Html.DisplayFor(model => model.The_Loai.Ten_The_Loai)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Tác Giả</label>
+                                <div class="col-md-12">
+                                    <div class="display-custom">
+                                        @Html.DisplayFor(model => model.Tac_Gia.Ten_Tac_Gia)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Giá Bán</label>
+                                <div class="col-md-12">
+                                    <div class="display-custom text-danger font-weight-bold">
+                                        @(string.Format("{0:N0}", Model.Gia_Ban)) đ
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Số Lượng Tồn Kho</label>
+                                <div class="col-md-12">
+                                    <div class="display-custom">
+                                        @Html.DisplayFor(model => model.So_Luong_Ton)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Nhà Xuất Bản</label>
+                                <div class="col-md-12">
+                                    <div class="display-custom">
+                                        @(string.IsNullOrEmpty(Model.Nha_Xuat_Ban) ? "Chưa cập nhật" : Model.Nha_Xuat_Ban)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="form-label-custom col-md-12">Ngày Xuất Bản</label>
+                                <div class="col-md-12">
+                                    <div class="display-custom">
+                                        @(Model.Ngay_Xuat_Ban.HasValue ? Model.Ngay_Xuat_Ban.Value.ToString("dd/MM/yyyy") : "Chưa cập nhật")
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-group mb-3 text-center">
+                            <label class="form-label-custom d-block text-left pl-3">Hình Ảnh Bìa</label>
+                            @if (!string.IsNullOrEmpty(Model.Anh_Bia_Url))
+                            {
+                                <img src="@Model.Anh_Bia_Url" style="max-height: 150px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); object-fit: cover;" alt="Bìa sách" />
+                            }
+                            else
+                            {
+                                <img src="https://via.placeholder.com/120x160?text=No+Image" style="max-height: 150px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); object-fit: cover;" alt="No Image" />
+                            }
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label-custom col-md-12">Mô Tả Nội Dung</label>
+                            <div class="col-md-12">
+                                <div class="display-custom text-secondary style-scroll" style="min-height: 95px; align-items: flex-start; overflow-y: auto; display: block; max-height: 120px;">
+                                    @(string.IsNullOrEmpty(Model.Mo_Ta) ? "Chưa có mô tả chi tiết cho cuốn sách này." : Model.Mo_Ta)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-4" />
+
+                <div class="form-group mb-0 mt-3">
+                    <div class="col-md-12 d-flex align-items-center justify-content-between">
+                        <a href="@Url.Action("Index")" class="btn-back">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                        </a>
+
+                        <button type="submit" class="btn btn-delete-custom">
+                            <i class="fa-solid fa-trash-can me-1"></i> Xác Nhận Xóa
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,216 @@
+﻿<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Bookara</title>
+
+    <link rel="icon" href="@Url.Content("~/Image/Header/faviconIMG.png")" type="image/png">
+    <link rel="icon" href="@Url.Content("~/Image/Header/faviconIMG.png")" type="image/png">
+
+    <!-- CHÈN THÊM CÁC FONT CHỮ MỚI VÀO ĐÂY -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Các file CSS dùng chung toàn hệ thống -->
+    @Styles.Render("~/Content/css")
+
+    <!-- Các file CSS dùng chung toàn hệ thống -->
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="@Url.Content("~/Content/Header.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/Footer.css")" />
+
+    <!-- Các thư viện FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- Nơi nhúng CSS riêng của từng View (như HomePage.css) -->
+    @RenderSection("Styles", required: false)
+
+    <!-- Các CSS tùy biến nhỏ lẻ viết trực tiếp -->
+    <style>
+        .login-container:hover .dropdown-menu-account {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="toast-noti"></div>
+    @* 1. Header*@
+    <header style="width: 100%; background-color: #F6F1E4; padding: 25px 0; font-family: 'Manrope', sans-serif; box-sizing: border-box;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; width: 100%;">
+
+            <!-- 1. Khối bên trái: Logo + Menu điều hướng -->
+            <div style="display: flex; align-items: center; gap: 40px;">
+                <!-- Logo thương hiệu -->
+                <a href="/Home/HomePage" style="text-decoration: none; font-family: 'Fraunces', serif; font-size: 1.6rem; font-weight: 700; color: #1C2B45; display: inline-block; white-space: nowrap;">
+                    <span>Book</span><span style="color: #7B2635; font-style: italic;">ora</span>
+                </a>
+
+                <!-- Menu chữ nhỏ gọn, ép trên một hàng -->
+                <nav style="display: flex; align-items: center; gap: 20px; white-space: nowrap;">
+                    <a href="/Home/KhoaHoc" style="color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: inline-block;">Khoa Học</a>
+                    <a href="/Home/TamLyHoc" style="color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: inline-block;">Tâm Lý Học</a>
+                    <a href="/Home/VanHoc" style="color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: inline-block;">Văn Học</a>
+                    <a href="/Home/KinhTe" style="color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: inline-block;">Kinh Tế</a>
+                    <a href="/Home/SelfHelp" style="color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: inline-block;">Self-help</a>
+                </nav>
+            </div>
+
+            <!-- 2. Khối bên phải: Yêu thích, Giỏ hàng, Đăng ký/Đăng nhập -->
+            <div style="display: flex; align-items: center; gap: 20px; white-space: nowrap;">
+
+                <!-- Link yêu thích -->
+                <a href="#" style="color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 6px;">
+                    <i class="fa-regular fa-heart" style="font-size: 1.05rem;"></i> Yêu thích
+                </a>
+
+                <!-- Khối Giỏ hàng kèm số lượng -->
+                <a href="/Home/ShoppingCart" style="color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 6px; position: relative;">
+                    <i class="fa-solid fa-cart-shopping" style="font-size: 1.05rem;"></i> Giỏ hàng
+                    @if ((int)(ViewBag.SoLuongGioHang ?? 0) > 0)
+                    {
+                        <span style="background:#7B2635; color:#FFFDF8; border-radius:50%; font-size:10px; padding: 1px 5px; font-weight: 700; display: inline-block;">@ViewBag.SoLuongGioHang</span>
+                    }
+                </a>
+
+                <!-- Khối nút Đăng ký / Đăng nhập (Ép kích thước cố định, chống kế thừa thuộc tính lạ) -->
+                <div class="login-container" style="position: relative; display: flex; align-items: center; gap: 10px; margin-left: 5px;">
+                    @if (ViewBag.DaDangNhap == true)
+                    {
+                        <div class="dropdown" style="display:inline-block;">
+                            <a href="#" class="btn-account" style="display: inline-flex; align-items: center; padding: 8px 18px; border: 1.5px solid #1C2B45; border-radius: 999px; color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.9rem; height: 38px; box-sizing: border-box;">
+                                <i class="fa-regular fa-user" style="margin-right: 5px;"></i> @ViewBag.TenKhachHangHienTai
+                            </a>
+                            <div class="dropdown-menu-account" style="position:absolute; right: 0; top: 100%; margin-top: 5px; background:#FFFDF8; box-shadow:0 6px 16px rgba(28,43,69,.12); padding:6px 0; display:none; min-width:190px; z-index:99; border-radius: 10px; border: 1px solid #EDE5CF;">
+                                <a href="/Account/ThongTinTaiKhoan" style="display:block; padding:8px 16px; color:#1C2B45; text-decoration:none; font-size: 0.85rem;"><i class="fa-regular fa-id-card" style="width:16px; margin-right:6px;"></i>Tài khoản của tôi</a>
+                                <a href="/Account/ThongTinTaiKhoan?tab=donhang" style="display:block; padding:8px 16px; color:#1C2B45; text-decoration:none; font-size: 0.85rem;"><i class="fa-solid fa-box" style="width:16px; margin-right:6px;"></i>Đơn hàng của tôi</a>
+                                <div style="border-top:1px solid #EDE5CF; margin:4px 0;"></div>
+                                <a href="/Home/Logout" style="display:block; padding:8px 16px; color:#B3261E; text-decoration:none; font-size: 0.85rem;"><i class="fa-solid fa-right-from-bracket" style="width:16px; margin-right:6px;"></i>Đăng xuất</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Nút Đăng nhập -->
+                        <a href="/Home/Login" style="display: inline-flex; align-items: center; justify-content: center; padding: 0 20px; border: 1.2px solid #1C2B45; border-radius: 999px; color: #1C2B45; text-decoration: none; font-weight: 600; font-size: 0.9rem; height: 38px; box-sizing: border-box; line-height: 1;">Đăng nhập</a>
+
+                        <!-- Nút Đăng ký -->
+                        <a href="/Home/Register" style="display: inline-flex; align-items: center; justify-content: center; padding: 0 22px; background-color: #7B2635; color: #FFFDF8; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 0.9rem; height: 38px; box-sizing: border-box; line-height: 1;">Đăng ký</a>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </header>    @* 2. Body *@
+    @if (TempData["ThongBao"] != null)
+    {
+        <div class="alert-thongbao @TempData["LoaiThongBao"]">@TempData["ThongBao"]</div>
+    }
+    @RenderBody()
+    @* 3. Footer *@
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section" id="footer-section1">
+                <h3>Liên hệ</h3>
+                <p>📧 info@Bookora.com</p>
+                <p>📱 0123 456 789</p>
+                <p>📍 Hồ Chí Minh, Việt Nam</p>
+            </div>
+            <div class="footer-section" id="footer-section2">
+                <h3>Về Bookora Books</h3>
+                <ul>
+                    <li><a href="/Home/Contact">Liên hệ</a></li>
+                    <li><a href="/Home/About">Về chúng tôi</a></li>
+                    <li><a href="/Home/ReturnPolicy">Chính sách hoàn trả và hoàn tiền</a></li>
+                    <li><a href="/Home/PrivacyPolicy">Chính sách bảo mật</a></li>
+                    <li><a href="/Home/Shipping">Chính sách vận chuyển</a></li>
+                </ul>
+            </div>
+            <div class="footer-section" id="footer-section3">
+                <h3>Danh mục</h3>
+                <ul>
+                    <li><a href="/Home/KhoaHoc">Khoa Học</a></li>
+                    <li><a href="/Home/TamLyHoc">Tâm Lý Học</a></li>
+                    <li><a href="/Home/VanHoc">Văn Học</a></li>
+                    <li><a href="/Home/KinhTe">Kinh Tế</a></li>
+                    <li><a href="/Home/SelfHelp">Self-help</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Bookora. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @using (Html.BeginForm("ToggleYeuThich", "Home", FormMethod.Post, new { id = "form-token-yeuthich", style = "display:none;" }))
+    {
+        @Html.AntiForgeryToken()
+    }
+    <script>
+        function hienToast(mess, loai) {
+            var box = document.getElementById('toast-noti');
+            if (!box) return;
+            var item = document.createElement('div');
+            item.className = 'toast-item ' + (loai || 'info');
+            item.textContent = mess;
+            box.appendChild(item);
+            setTimeout(function () { item.classList.add('show'); }, 10);
+            setTimeout(function () {
+                item.classList.remove('show');
+                setTimeout(function () { item.remove(); }, 300);
+            }, 2500);
+        }
+
+        document.addEventListener('click', function (e) {
+            var btn = e.target.closest('.favorite-btn');
+            if (!btn) return;
+            e.preventDefault();
+
+            var maSach = btn.getAttribute('data-masach');
+            var token = document.querySelector('#form-token-yeuthich input[name="__RequestVerificationToken"]');
+            if (!maSach || !token) return;
+
+            var formData = new FormData();
+            formData.append('maSach', maSach);
+            formData.append('__RequestVerificationToken', token.value);
+
+            fetch('/Home/ToggleYeuThich', {
+                method: 'POST',
+                body: formData
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.requireLogin) {
+                        hienToast(data.message, 'danger');
+                        setTimeout(function () { window.location.href = '/Home/Login'; }, 1200);
+                        return;
+                    }
+                    if (!data.success) {
+                        hienToast(data.message || 'Có lỗi xảy ra, vui lòng thử lại.', 'danger');
+                        return;
+                    }
+
+                    var icon = btn.querySelector('i');
+                    if (data.isFavorited) {
+                        btn.classList.add('active');
+                        if (icon) { icon.classList.remove('fa-regular'); icon.classList.add('fa-solid'); }
+                    } else {
+                        btn.classList.remove('active');
+                        if (icon) { icon.classList.remove('fa-solid'); icon.classList.add('fa-regular'); }
+                    }
+                    btn.classList.add('pulse');
+                    setTimeout(function () { btn.classList.remove('pulse'); }, 350);
+
+                    hienToast(data.message, 'success');
+                })
+                .catch(function () {
+                    hienToast('Không thể kết nối máy chủ, vui lòng thử lại.', 'danger');
+                });
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

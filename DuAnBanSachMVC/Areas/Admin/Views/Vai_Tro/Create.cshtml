@@ -1,0 +1,89 @@
+﻿@model DuAnBanSachMVC.Models.Vai_Tro
+
+@{
+    ViewBag.Title = "Thêm Vai Trò Mới";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml"; // Đường dẫn Layout Admin của bạn
+}
+
+<style>
+    /* Định nghĩa biến màu sắc nếu chưa có */
+    :root {
+        --primary-color: #5F9F90; /* Xanh ngọc chủ đạo */
+        --primary-hover: #4A8376; /* Xanh ngọc đậm khi hover */
+    }
+
+    /* Style cho nút Quay lại */
+    .btn-back {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: transparent; /* Nền trong suốt */
+        color: var(--primary-color) !important; /* Chữ màu xanh ngọc */
+        border: 1.5px solid var(--primary-color); /* Viền xanh ngọc */
+        border-radius: 20px; /* Bo tròn góc mềm mại */
+        padding: 8px 20px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+        /* Hiệu ứng khi di chuột vào nút (Hover) */
+        .btn-back:hover {
+            background-color: var(--primary-color); /* Đổi nền sang xanh ngọc */
+            color: #ffffff !important; /* Chữ chuyển sang màu trắng */
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(95, 159, 144, 0.2); /* Hiệu ứng đổ bóng nhẹ */
+            transform: translateY(-1px); /* Nổi nhẹ lên */
+        }
+
+        /* Hiệu ứng khi click giữ nút (Active) */
+        .btn-back:active {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(0);
+        }
+</style>
+
+
+<div class="container mt-4" style="max-width: 600px;">
+    <div class="mb-4">
+        <h2 class="page-title m-0">Thêm Vai Trò Mới</h2>
+        <p class="text-muted m-0 mt-1 small">Tạo vai trò phân quyền mới (Mã số vai trò sẽ tự động tăng).</p>
+    </div>
+
+    <div class="card card-custom">
+        <div class="card-body p-4">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                    <div class="form-group mb-4">
+                        <label class="control-label font-weight-bold text-dark mb-1">Tên Vai Trò (Hiển thị)</label>
+                        @Html.EditorFor(model => model.Ten_Vai_Tro, new { htmlAttributes = new { @class = "form-control", placeholder = "Ví dụ: Quản trị viên, Thủ thư, Khách hàng...", required = "required" } })
+                        @Html.ValidationMessageFor(model => model.Ten_Vai_Tro, "", new { @class = "text-danger d-block mt-1" })
+                        <small class="form-text text-muted">Đặt tên rõ nghĩa để dễ dàng phân biệt khi gán quyền cho tài khoản.</small>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="@Url.Action("Index")" class="btn-back">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                        </a>
+
+                        <button type="submit" class="btn btn-save shadow-sm">
+                            <i class="fas fa-save mr-1"></i> Lưu vai trò
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

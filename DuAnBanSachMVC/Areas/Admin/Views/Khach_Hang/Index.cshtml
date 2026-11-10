@@ -1,0 +1,121 @@
+﻿@model IEnumerable<DuAnBanSachMVC.Models.Khach_Hang>
+
+@{
+    ViewBag.Title = "Quản Lý Khách Hàng";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.04);
+        width: 100%;
+    }
+
+    .member-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .member-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+    .btn-create-custom {
+        background-color: var(--primary-color);
+        color: white !important;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 8px 20px;
+    }
+
+        .btn-create-custom:hover {
+            background-color: var(--primary-hover);
+        }
+</style>
+
+<div class="container-fluid px-4 mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title m-0">Quản Lý Thành Viên</h2>
+            <p class="text-muted m-0 mt-1">Danh sách tài khoản khách hàng hệ thống.</p>
+        </div>
+        <a href="@Url.Action("Create")" class="btn btn-create-custom">
+            <i class="fas fa-user-plus mr-2"></i>Thêm Khách Hàng Mới
+        </a>
+    </div>
+
+    <div class="card card-custom mb-4">
+        <div class="card-body p-4">
+            @using (Html.BeginForm("Index", "Khach_Hang", FormMethod.Get, new { @class = "row align-items-center" }))
+            {
+                <div class="col-xl-6 col-lg-7 mb-3 mb-lg-0">
+                    <input type="text" name="searchString" class="form-control"
+                           placeholder="Tìm tài khoản theo tên đăng nhập, họ tên, email..."
+                           value="@ViewBag.CurrentSearch" style="border-radius: 8px;" />
+                </div>
+                <div class="col-xl-6 col-lg-5 text-lg-right">
+                    <button type="submit" class="btn text-white font-weight-bold px-4" style="background-color: var(--primary-color); border-radius: 8px;">
+                        <i class="fas fa-filter mr-2"></i>Tìm kiếm
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-light border font-weight-bold ml-2" style="border-radius: 8px;">
+                        <i class="fas fa-sync-alt mr-2"></i>Xóa bộ lọc
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        @if (!Model.Any())
+        {
+            <div class="col-12">
+                <div class="card card-custom p-5 text-center text-muted">
+                    <i class="fas fa-users-slash fa-3x mb-3 text-light"></i> Không tìm thấy tài khoản nào phù hợp.
+                </div>
+            </div>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <div class="col-xl-6 col-md-12 mb-4">
+                    <div class="card card-custom member-card position-relative">
+
+                        <div class="position-absolute" style="top: 15px; right: 20px; z-index: 10;">
+                            <a href="@Url.Action("Edit", new { id = item.Ma_Khach_Hang })" class="btn btn-sm btn-outline-warning border-0 mr-1" title="Sửa">
+                                <i class="fas fa-edit fa-lg"></i>
+                            </a>
+                            <a href="@Url.Action("Details", new { id = item.Ma_Khach_Hang })" class="btn btn-sm btn-outline-info border-0 mr-1" title="Chi tiết">
+                                <i class="fas fa-eye fa-lg"></i>
+                            </a>
+                            <a href="@Url.Action("Delete", new { id = item.Ma_Khach_Hang })" class="btn btn-sm btn-outline-danger border-0" title="Xóa">
+                                <i class="fas fa-trash-alt fa-lg"></i>
+                            </a>
+                        </div>
+
+                        <div class="card-body p-4 pt-5">
+                            @Html.Partial("_ThongTinKhachHangPartial", item)
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

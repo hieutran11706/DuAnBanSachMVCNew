@@ -1,0 +1,81 @@
+﻿@model DuAnBanSachMVC.Models.Khach_Hang
+
+<style>
+    .info-label-partial {
+        font-weight: 600;
+        color: #6c757d;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value-partial {
+        font-size: 16px;
+        font-weight: 700;
+        color: #2F3E46;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="info-label-partial">Họ và Tên</div>
+        <div class="info-value-partial mt-1">
+            <i class="fas fa-user text-secondary mr-2"></i> @Model.Ho_Ten
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="info-label-partial">Tên đăng nhập (Username)</div>
+        <div class="info-value-partial mt-1 text-secondary">
+            <i class="fas fa-user-tag text-secondary mr-2"></i> @Model.Ten_Dang_Nhap
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="info-label-partial">Địa chỉ Email</div>
+        <div class="info-value-partial mt-1">
+            <i class="far fa-envelope text-secondary mr-2"></i> @Model.Email
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="info-label-partial">Số điện thoại</div>
+        <div class="info-value-partial mt-1">
+            <i class="fas fa-mobile-alt text-secondary mr-2"></i> @Model.So_Dien_Thoai
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="info-label-partial">Ngày tạo tài khoản</div>
+        <div class="info-value-partial mt-1 text-muted">
+            <i class="far fa-calendar-alt text-secondary mr-2"></i> @Model.Ngay_Tao.ToString("dd/MM/yyyy HH:mm")
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="info-label-partial">Vai trò hiện tại</div>
+        <div class="mt-1">
+            @if (Model.Vai_Tro?.Ten_Vai_Tro == "Admin")
+            {
+                <span class="badge badge-danger px-3 py-1.5 font-weight-bold" style="border-radius: 20px; font-size: 13px;">
+                    <i class="fas fa-user-shield mr-1"></i> Quản trị viên (Admin)
+                </span>
+            }
+            else
+            {
+                <span class="badge badge-info px-3 py-1.5 font-weight-bold" style="border-radius: 20px; font-size: 13px;">
+                    <i class="fas fa-user mr-1"></i> Khách hàng thân thiết
+                </span>
+            }
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="info-label-partial">Mật khẩu hệ thống</div>
+        <div class="p-3 bg-light rounded mt-2 d-flex align-items-center text-muted" style="font-size: 14px; border-left: 4px solid #5F9F90;">
+            <i class="fas fa-lock mr-2 text-secondary"></i>
+            <span class="font-weight-bold mr-2">••••••••</span>
+            <small class="italic">(Vì lý do bảo mật, mật khẩu thật đã được mã hóa ẩn đi trên giao diện)</small>
+        </div>
+    </div>
+</div>

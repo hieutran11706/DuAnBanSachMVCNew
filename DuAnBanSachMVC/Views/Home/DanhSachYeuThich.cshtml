@@ -1,0 +1,25 @@
+﻿@model List<YeuThichViewModel>
+@{
+    ViewBag.Title = "DanhSachYeuThicht";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = ViewBag.DanhSachYeuThich;
+}
+
+<div class="container">
+    <h2 class="page-title">@ViewBag.DanhSachYeuThich</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-wishlist">
+            <p>Bạn chưa có sách yêu thích nào.</p>
+            <a href="@Url.Action("HomePage")" class="btn btn-primary">Khám phá sách ngay</a>
+        </div>
+    }
+    else
+    {
+        @Html.Partial("_GridBookCard", Model)
+    }
+</div>

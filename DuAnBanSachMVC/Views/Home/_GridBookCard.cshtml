@@ -1,0 +1,50 @@
+﻿@model Sach
+@{
+    var dsYeuThich = ViewBag.DanhSachYeuThichIds as List<int>;
+    bool isFav = dsYeuThich != null && dsYeuThich.Contains(Model.Ma_Sach);
+    bool conHang = Model.So_Luong_Ton > 0;
+}
+<li class="book-item">
+    <div class="book-card">
+        <div class="book-image">
+            @if (!conHang)
+            {
+                <span class="book-badge badge-out">Hết hàng</span>
+            }
+            <button type="button"
+                    class="favorite-btn @(isFav ? "active" : "")"
+                    data-masach="@Model.Ma_Sach"
+                    title="Yêu thích">
+                <i class="@(isFav ? "fa-solid" : "fa-regular") fa-heart"></i>
+            </button>
+            <a href="/Home/Detail/@Model.Ma_Sach">
+                <img src="@(string.IsNullOrEmpty(Model.Anh_Bia_Url) ? "https://via.placeholder.com/240x320?text=No+Image" : Model.Anh_Bia_Url)" alt="@Model.Ten_Sach">
+            </a>
+        </div>
+        <div class="book-info">
+            <h3 class="title"><a href="/Home/Detail/@Model.Ma_Sach" style="color:inherit; text-decoration:none;">@Model.Ten_Sach</a></h3>
+            <p class="publisher">@(Model.Tac_Gia != null ? Model.Tac_Gia.Ten_Tac_Gia : Model.Nha_Xuat_Ban)</p>
+        </div>
+        <div class="book-price">@Model.Gia_Ban.DinhDangTien()</div>
+        <div class="book-actions">
+            @using (Html.BeginForm("MuaNgay", "Home", FormMethod.Post, new { style = "display:contents;" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="maSach" value="@Model.Ma_Sach" />
+                <input type="hidden" name="soLuong" value="1" />
+                <button type="submit" class="btn-primary" @(conHang ? "" : "disabled")>
+                    Mua ngay
+                </button>
+            }
+            @using (Html.BeginForm("ThemVaoGioHang", "Home", FormMethod.Post, new { style = "display:contents;" }))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="maSach" value="@Model.Ma_Sach" />
+                <input type="hidden" name="soLuong" value="1" />
+                <button type="submit" class="btn-secondary" @(conHang ? "" : "disabled") title="Thêm giỏ hàng">
+                    <i class="fa-solid fa-cart-plus"></i>
+                </button>
+            }
+        </div>
+    </div>
+</li>

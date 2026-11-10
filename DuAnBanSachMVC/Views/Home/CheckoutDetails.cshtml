@@ -1,0 +1,334 @@
+﻿@model CheckoutViewModel
+@{
+    ViewBag.Title = "Checkout details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link rel="stylesheet" href="~/Content/CheckOutDetail.css" />
+    <style>
+        /* Đồng bộ phong cách thiết kế Vintage Bookora với trang Giỏ hàng */
+        .checkout-container {
+            background: #F6F1E4;
+            color: #1C2B45;
+            font-family: 'Manrope', sans-serif;
+            min-height: calc(100vh - 120px);
+            padding: 40px 16px;
+            box-sizing: border-box;
+        }
+
+        /* Tối ưu thanh điều hướng tiến trình breadcrumb */
+        .breadcrumbs {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0 0 32px 0;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .breadcrumbs li { display: flex; align-items: center; color: #6b7488; }
+        .breadcrumbs li:not(:last-child)::after { content: "›"; margin-left: 8px; color: #E4DCC5; font-size: 1.2rem; }
+        .breadcrumbs a { text-decoration: none; color: #6b7488; transition: 0.2s; }
+        .breadcrumbs a.active { color: #7B2635; font-weight: 700; }
+
+        /* Khối thông báo lỗi validation */
+        .alert-thongbao.danger {
+            background: #FDF2F2;
+            border: 1px solid #F8B4B4;
+            color: #9B1C1C;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 0 auto 24px auto;
+            max-width: 1100px;
+            font-size: 0.95rem;
+        }
+        .alert-thongbao.danger ul { margin: 4px 0 0 20px; padding: 0; }
+
+        /* Bố cục chia hai cột */
+        .checkout-main {
+            display: flex;
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: flex-start;
+        }
+        .billing-details {
+            flex: 1;
+            background: #FFFDF8;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(28,43,69,.04);
+            border: 1px solid #EDE5CF;
+        }
+        .your-order {
+            width: 380px;
+            flex-shrink: 0;
+            background: #FFFDF8;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(28,43,69,.04);
+            border: 1px solid #EDE5CF;
+        }
+
+        /* Tiêu đề phân khu */
+        .billing-details h2, .your-order h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 0 0 24px 0;
+            border-bottom: 2px solid #EDE5CF;
+            padding-bottom: 12px;
+            color: #1C2B45;
+        }
+
+        /* Thiết kế Form Nhập liệu */
+        .form-row {
+            margin-bottom: 20px;
+        }
+        .form-row label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #1C2B45;
+        }
+        .form-row input[type="text"],
+        .form-row input[type="email"],
+        .form-row textarea,
+        .coupon-banner input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #E4DCC5;
+            border-radius: 8px;
+            background: #FFFDF8;
+            color: #1C2B45;
+            font-family: 'Manrope', sans-serif;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: 0.2s;
+        }
+        .form-row input:focus, .form-row textarea:focus, .coupon-banner input:focus {
+            border-color: #7B2635;
+            box-shadow: 0 0 0 3px rgba(123, 38, 53, 0.1);
+        }
+        .form-row textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        /* Bố cục chia đôi cho SDT & Email */
+        .form-row-halves {
+            display: flex;
+            gap: 16px;
+        }
+        .form-row-halves .form-row {
+            flex: 1;
+        }
+
+        /* Thông báo lỗi validation của từng ô nhập */
+        .field-validation-error {
+            color: #B3261E;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: block;
+            margin-top: 6px;
+        }
+
+        /* Khối mã giảm giá */
+        .coupon-banner {
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px dashed #E4DCC5;
+        }
+
+        /* Bảng tóm tắt đơn hàng bên cột phải */
+        .order-summary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .order-summary th, .order-summary td {
+            padding: 12px 0;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #EDE5CF;
+        }
+        .order-summary th {
+            font-weight: 700;
+            color: #6b7488;
+            text-align: left;
+        }
+        .order-summary td {
+            text-align: right;
+            color: #1C2B45;
+        }
+        .order-summary tbody tr td:first-child {
+            text-align: left;
+            font-weight: 500;
+            padding-right: 10px;
+        }
+
+        /* Dòng tổng cộng */
+        .order-summary .total-row th, .order-summary .total-row td {
+            border-top: 1px dashed #E4DCC5;
+            border-bottom: none;
+            padding-top: 18px;
+            font-weight: 700;
+        }
+        .order-summary .total-row th {
+            color: #1C2B45;
+            font-size: 1.1rem;
+        }
+        .order-summary .total-row td {
+            color: #7B2635;
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+        }
+
+        /* Nút Đặt hàng */
+        .credit-card-button {
+            display: block;
+            width: 100%;
+            background: #7B2635;
+            color: #FFFDF8;
+            padding: 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 1rem;
+            font-family: 'Manrope', sans-serif;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(123, 38, 53, 0.15);
+            transition: 0.2s;
+            margin-bottom: 16px;
+        }
+        .credit-card-button:hover { background: #611D29; transform: translateY(-1px); }
+
+        /* Điều khoản */
+        .privacy-policy {
+            font-size: 0.82rem;
+            color: #6b7488;
+            line-height: 1.4;
+            margin: 0;
+            text-align: center;
+        }
+
+        /* Responsive cho thiết bị di động */
+        @@media (max-width: 768px) {
+            .checkout-main { flex-direction: column; }
+            .your-order { width: 100%; box-sizing: border-box; }
+            .form-row-halves { flex-direction: column; gap: 0; }
+        }
+    </style>
+}
+
+<div class="checkout-container">
+    <!-- Tiến trình mua sắm -->
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumbs">
+            <li><a href="/Home/ShoppingCart">Giỏ hàng</a></li>
+            <li><a href="/Home/CheckOutDetails" class="active">Thanh toán</a></li>
+            <li><a href="#">Hoàn tất</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hiển thị lỗi tổng quan nếu có -->
+    @Html.ValidationSummary(false, null, new { @class = "alert-thongbao danger" })
+
+    @using (Html.BeginForm("CheckOutDetails", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="checkout-main">
+            <!-- Cột trái: Form nhập thông tin -->
+            <div class="billing-details">
+                <h2>Thông tin giao hàng</h2>
+
+                <div class="form-row">
+                    @Html.LabelFor(m => m.Ho_Ten)
+                    @Html.TextBoxFor(m => m.Ho_Ten, new { type = "text", placeholder = "Nhập đầy đủ họ và tên" })
+                    @Html.ValidationMessageFor(m => m.Ho_Ten)
+                </div>
+
+                <div class="form-row-halves">
+                    <div class="form-row">
+                        @Html.LabelFor(m => m.So_Dien_Thoai)
+                        @Html.TextBoxFor(m => m.So_Dien_Thoai, new { type = "text", placeholder = "Số điện thoại nhận hàng" })
+                        @Html.ValidationMessageFor(m => m.So_Dien_Thoai)
+                    </div>
+                    <div class="form-row">
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email, new { type = "email", placeholder = "Địa chỉ email của bạn" })
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    @Html.LabelFor(m => m.Dia_Chi_Giao_Hang)
+                    @Html.TextBoxFor(m => m.Dia_Chi_Giao_Hang, new { type = "text", placeholder = "Số nhà, tên đường, phường/xã, quận/huyện..." })
+                    @Html.ValidationMessageFor(m => m.Dia_Chi_Giao_Hang)
+                </div>
+
+                <div class="form-row">
+                    @Html.LabelFor(m => m.Ghi_Chu)
+                    @Html.TextAreaFor(m => m.Ghi_Chu, new { placeholder = "Ghi chú về đơn hàng, thời gian giao hàng mong muốn..." })
+                </div>
+
+                <div class="coupon-banner">
+                    <label style="font-weight: 700; display: block; margin-bottom: 8px; font-size: 0.9rem;">Mã giảm giá (nếu có)</label>
+                    @Html.TextBoxFor(m => m.Ma_Coupon, new { type = "text", placeholder = "Nhập mã ưu đãi tại đây" })
+                    @Html.ValidationMessageFor(m => m.Ma_Coupon)
+                </div>
+            </div>
+
+            <!-- Cột phải: Xem trước và xác nhận đơn hàng -->
+            <div class="your-order">
+                <h2>Đơn hàng của bạn</h2>
+                <div class="order-summary">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th style="text-align: right;">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.GioHang)
+                            {
+                                <tr>
+                                    <td>@item.Ten_Sach <span style="color: #6b7488; font-size: 0.85rem; font-weight: 600;">&times; @item.So_Luong</span></td>
+                                    <td>@item.Thanh_Tien.DinhDangTien()</td>
+                                </tr>
+                            }
+                            <tr class="total-row">
+                                <th>Tổng cộng</th>
+                                <td>@Model.Tong_Tien.DinhDangTien()</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <label>Phương thức thanh toán:</label>
+                    <div>
+                        <label>
+                            <input type="radio" name="PhuongThucThanhToan" value="COD" checked />
+                            Thanh toán khi nhận hàng (COD)
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            <input type="radio" name="PhuongThucThanhToan" value="VNPAY" />
+                            Thanh toán online qua VNPay
+                        </label>
+                    </div>
+                </div>
+
+                <div class="payment-methods">
+                    <button type="submit" class="credit-card-button">Đặt hàng (Xác nhận đơn hàng)</button>
+                </div>
+                <p class="privacy-policy">Bằng việc đặt hàng, bạn đồng ý với các điều khoản và chính sách mua hàng của Bookora.</p>
+            </div>
+        </div>
+    }
+</div>

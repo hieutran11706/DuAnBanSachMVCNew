@@ -1,0 +1,146 @@
+﻿@model IEnumerable<DuAnBanSachMVC.Models.The_Loai>
+
+@{
+    ViewBag.Title = "Danh Mục Thể Loại";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --primary-hover: #4A8376;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--primary-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    /* Định dạng lại Card theo tone màu mới */
+    .card-custom {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+    }
+
+    .card-header-custom {
+        background-color: #fff;
+        border-bottom: 1px solid #ECEFF1;
+        padding: 15px 20px;
+        border-top-left-radius: 12px !important;
+        border-top-right-radius: 12px !important;
+    }
+
+    /* Nút thêm mới màu xanh ngọc */
+    .btn-add-new {
+        background-color: var(--primary-color) !important;
+        color: #fff !important;
+        border-radius: 20px;
+        padding: 6px 18px;
+        font-weight: 500;
+        border: none;
+        transition: background 0.2s;
+        text-decoration: none;
+    }
+
+        .btn-add-new:hover {
+            background-color: var(--primary-hover) !important;
+            color: #fff !important;
+        }
+
+    /* Định dạng bảng */
+    .table-custom thead {
+        background-color: var(--bg-light);
+        color: var(--primary-color);
+    }
+
+    .table-custom th {
+        font-weight: 600;
+    }
+</style>
+
+<div class="container-fluid mt-4">
+
+    <!-- KHU VỰC HIỂN THỊ THANH THÔNG BÁO -->
+    @if (TempData["AlertMessage"] != null)
+    {
+        <div class="alert alert-@TempData["AlertType"] alert-dismissible fade show d-flex align-items-center" role="alert" style="border-radius: 8px; margin-bottom: 20px;">
+            <i class="fa-solid @(TempData["AlertType"].ToString() == "success" ? "fa-circle-check" : "fa-circle-exclamation") mr-2" style="font-size: 20px;"></i>
+            <div>
+                @TempData["AlertMessage"]
+            </div>
+            <button type="button" class="close ml-auto" data-dismiss="alert" aria-label="Close" style="outline: none;">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
+
+    <!-- Tiêu đề trang đồng bộ cấu trúc -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="page-title m-0">Quản Lý Thể Loại</h2>
+            <p class="text-muted m-0 mt-1 small">Danh sách toàn bộ danh mục thể loại sách có trên hệ thống.</p>
+        </div>
+        <a href="@Url.Action("Create")" class="btn btn-add-new shadow-sm">
+            <i class="fas fa-plus fa-sm mr-1"></i> Thêm thể loại mới
+        </a>
+    </div>
+
+    <!-- Khung Card bọc ngoài bảng -->
+    <div class="card card-custom mb-4">
+        <div class="card-header card-header-custom">
+            <h6 class="m-0 font-weight-bold" style="color: var(--primary-color);"><i class="fas fa-list mr-2"></i>Danh mục phân loại</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover table-custom text-dark align-middle" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Ten_The_Loai)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Mo_Ta)
+                            </th>
+                            <th style="width: 25%;" class="text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="font-weight-bold text-gray-800 align-middle">
+                                    @Html.DisplayFor(modelItem => item.Ten_The_Loai)
+                                </td>
+                                <td class="text-secondary align-middle">
+                                    @Html.DisplayFor(modelItem => item.Mo_Ta)
+                                </td>
+                                <td class="text-center align-middle">
+                                    <div class="btn-group" role="group">
+                                        <a href="@Url.Action("Edit", new { id = item.Ma_The_Loai })" class="btn btn-sm btn-outline-primary" title="Chỉnh sửa">
+                                            <i class="fas fa-edit"></i> <span class="d-none d-sm-inline ml-1">Sửa</span>
+                                        </a>
+
+                                        <a href="@Url.Action("Details", new { id = item.Ma_The_Loai })" class="btn btn-sm btn-outline-info mx-1" title="Xem chi tiết">
+                                            <i class="fas fa-info-circle"></i> <span class="d-none d-sm-inline ml-1">Chi tiết</span>
+                                        </a>
+
+                                        <a href="@Url.Action("Delete", new { id = item.Ma_The_Loai })" class="btn btn-sm btn-outline-danger" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i> <span class="d-none d-sm-inline ml-1">Xóa</span>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

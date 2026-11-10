@@ -1,0 +1,148 @@
+﻿@model DuAnBanSachMVC.Models.Phieu_Giam_Gia
+
+@{
+    ViewBag.Title = "Xóa Phiếu Giảm Giá";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #5F9F90;
+        --danger-color: #D9534F;
+        --danger-hover: #C9302C;
+        --bg-light: #F4F8F7;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #2F3E46;
+        border-left: 5px solid var(--danger-color);
+        padding-left: 15px;
+        margin-bottom: 25px;
+        text-transform: uppercase;
+        font-size: 24px;
+    }
+
+    .form-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        background: #fff;
+        padding: 30px;
+        max-width: 650px;
+    }
+
+    .form-label-custom {
+        font-weight: 600;
+        color: #2F3E46;
+        margin-bottom: 6px;
+    }
+
+    .display-custom {
+        border: 1.5px solid #E0E7E5 !important;
+        border-radius: 8px !important;
+        padding: 10px 15px !important;
+        background-color: var(--bg-light);
+        color: #495057;
+        min-height: 45px;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-delete-custom {
+        background-color: var(--danger-color) !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 20px !important;
+        padding: 10px 25px !important;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+
+        .btn-delete-custom:hover {
+            background-color: var(--danger-hover) !important;
+        }
+
+    .btn-back {
+        color: #666 !important;
+        text-decoration: none;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+    }
+
+        .btn-back:hover {
+            color: var(--primary-color) !important;
+        }
+</style>
+
+<div class="container mt-4">
+    <h2 class="page-title">Xóa Phiếu Giảm Giá</h2>
+    <p class="text-muted mb-4 font-weight-bold">Bạn có chắc chắn muốn xóa vĩnh viễn phiếu giảm giá này khỏi hệ thống? Hành động này không thể hoàn tác.</p>
+
+    <div class="form-card">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <div class="form-group mb-3">
+                    <label class="form-label-custom col-md-12">Mã Code Giảm Giá</label>
+                    <div class="col-md-12">
+                        <div class="display-custom font-weight-bold text-danger">
+                            @Html.DisplayFor(model => model.Code_Giam_Gia)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label-custom col-md-12">Mức Giảm Giá</label>
+                    <div class="col-md-12">
+                        <div class="display-custom text-secondary">
+                            @if (Model.Loai_Giam_Gia == "Phan_Tram")
+                            {
+                                <span>Giảm @string.Format("{0:0}", Model.Gia_Tri_Giam)%</span>
+                            }
+                            else
+                            {
+                                <span>Giảm @string.Format("{0:N0}", Model.Gia_Tri_Giam) đ</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label-custom col-md-12">Số Lượng Lượt Dùng Còn Lại</label>
+                    <div class="col-md-12">
+                        <div class="display-custom text-secondary">
+                            @Model.So_Luong_Con_Lai lượt
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label-custom col-md-12">Hạn Sử Dụng</label>
+                    <div class="col-md-12">
+                        <div class="display-custom text-muted small">
+                            Từ @Model.Ngay_Bat_Dau.ToString("dd/MM/yyyy") đến @Model.Ngay_Ket_Thuc.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-4" />
+
+                <div class="form-group mb-0 mt-3">
+                    <div class="col-md-12 d-flex align-items-center justify-content-between">
+                        <a href="@Url.Action("Index")" class="btn-back">
+                            <i class="fa-solid fa-arrow-left me-2"></i> Quay lại danh sách
+                        </a>
+
+                        <button type="submit" class="btn btn-delete-custom">
+                            <i class="fa-solid fa-trash-can me-1"></i> Xác Nhận Xóa Phiếu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

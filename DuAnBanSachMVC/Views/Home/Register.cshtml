@@ -1,0 +1,230 @@
+﻿@model RegisterViewModel
+@{
+    ViewBag.Title = "Đăng ký";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <style>
+        .auth-page-wrapper {
+            background: #F6F1E4;
+            color: #1C2B45;
+            font-family: 'Manrope', sans-serif;
+            min-height: calc(100vh - 120px); /* Tự động co giãn theo chiều cao màn hình trừ đi header/footer */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            box-sizing: border-box;
+        }
+
+        .card-register {
+            background: #FFFDF8;
+            border-radius: 20px;
+            padding: 44px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 50px rgba(28,43,69,.08);
+            border: 1px solid #EDE5CF;
+            box-sizing: border-box;
+        }
+
+        .logo-vintage {
+            font-family: 'Fraunces', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 6px;
+            color: #1C2B45;
+        }
+
+            .logo-vintage span {
+                color: #7B2635;
+                font-style: italic;
+            }
+
+        .card-register h1 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.7rem;
+            font-weight: 600;
+            text-align: center;
+            margin: 0 0 6px;
+            color: #1C2B45;
+        }
+
+        .card-register .sub {
+            text-align: center;
+            color: #6b7488;
+            font-size: .92rem;
+            margin-bottom: 28px;
+        }
+
+        .card-register label {
+            font-weight: 700;
+            font-size: .85rem;
+            display: block;
+            margin: 14px 0 6px;
+            color: #1C2B45;
+        }
+
+        .card-register input[type=text],
+        .card-register input[type=email],
+        .card-register input[type=password],
+        .card-register input[type=tel] {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #E4DCC5;
+            font-family: 'Manrope';
+            font-size: .95rem;
+            outline: none;
+            background-color: #FFFDF8;
+            box-sizing: border-box;
+            color: #1C2B45;
+            transition: 0.2s;
+        }
+
+        .card-register input:focus {
+            border-color: #7B2635;
+            background-color: #ffffff;
+        }
+
+        .card-register .text-danger {
+            color: #B3261E;
+            font-size: .8rem;
+            font-weight: 500;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .card-register .validation-summary-errors {
+            background-color: #FFF0F2;
+            border: 1px solid #F8D7DA;
+            padding: 12px 12px 12px 30px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+            .card-register .validation-summary-errors ul {
+                margin: 0;
+                padding: 0;
+                color: #7B2635;
+                font-size: .85rem;
+            }
+
+        .card-register .btn-submit {
+            width: 100%;
+            margin-top: 28px;
+            background: #7B2635;
+            color: #FFFDF8;
+            border: none;
+            padding: 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: .98rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(123, 38, 53, 0.15);
+            transition: 0.2s;
+        }
+
+            .card-register .btn-submit:hover {
+                background: #611D29;
+                transform: translateY(-1px);
+            }
+
+        .card-register .foot-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: .9rem;
+            color: #6b7488;
+        }
+
+            .card-register .foot-link a {
+                color: #7B2635;
+                font-weight: 700;
+                text-decoration: none;
+            }
+
+                .card-register .foot-link a:hover {
+                    text-decoration: underline;
+                }
+
+        .card-register .back-home {
+            display: block;
+            text-align: center;
+            margin-bottom: 18px;
+            font-size: .85rem;
+            color: #6b7488;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+            .card-register .back-home:hover {
+                color: #7B2635;
+            }
+    </style>
+}
+
+<div class="auth-page-wrapper">
+    <div class="card-register">
+        <!-- Đường dẫn về trang chủ đồng bộ Action gốc -->
+        <a class="back-home" href="/Home/HomePage">&larr; Về trang chủ</a>
+
+        <!-- Đồng bộ tên thương hiệu Bookora -->
+        <div class="logo-vintage">Book<span>ora</span></div>
+
+        <h1>Đăng Ký</h1>
+
+        <!-- Chỉ định đúng Action "Register" và Controller "Home" theo cấu trúc dự án trước -->
+        @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            if (!ViewData.ModelState.IsValid)
+            {
+                @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors" })
+            }
+
+            <div class="form-row">
+                @Html.LabelFor(m => m.Ho_Ten)
+                @Html.TextBoxFor(m => m.Ho_Ten, new { @class = "input-text", type = "text", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(m => m.Ho_Ten)
+            </div>
+
+            <div class="form-row">
+                @Html.LabelFor(m => m.Ten_Dang_Nhap)
+                @Html.TextBoxFor(m => m.Ten_Dang_Nhap, new { @class = "input-text", type = "text" })
+                @Html.ValidationMessageFor(m => m.Ten_Dang_Nhap)
+            </div>
+
+            <div class="form-row">
+                @Html.LabelFor(m => m.Email)
+                @Html.TextBoxFor(m => m.Email, new { @class = "input-text", type = "email" })
+                @Html.ValidationMessageFor(m => m.Email)
+            </div>
+
+            <div class="form-row">
+                @Html.LabelFor(m => m.So_Dien_Thoai)
+                @Html.TextBoxFor(m => m.So_Dien_Thoai, new { @class = "input-text", type = "text" })
+                @Html.ValidationMessageFor(m => m.So_Dien_Thoai)
+            </div>
+
+            <div class="form-row">
+                @Html.LabelFor(m => m.Mat_Khau)
+                @Html.PasswordFor(m => m.Mat_Khau, new { @class = "input-text" })
+                @Html.ValidationMessageFor(m => m.Mat_Khau)
+            </div>
+
+            <div class="form-row">
+                @Html.LabelFor(m => m.Xac_Nhan_Mat_Khau)
+                @Html.PasswordFor(m => m.Xac_Nhan_Mat_Khau, new { @class = "input-text" })
+                @Html.ValidationMessageFor(m => m.Xac_Nhan_Mat_Khau)
+            </div>
+
+            <button type="submit" class="btn-submit">Đăng ký</button>
+        }
+        <div class="foot-link">
+            Đã có tài khoản? <a href="/Home/Login">Đăng nhập ngay</a>
+        </div>
+    </div>
+</div>
+</main>
