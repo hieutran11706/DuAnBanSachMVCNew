@@ -32,5 +32,7 @@ namespace DuAnBanSachMVC.ViewModels
         public decimal Tong_Tien { get; set; }
         public decimal Tien_Giam_Gia { get; set; }
         public decimal Thanh_Tien { get; set; }
+        public string Phuong_Thuc_Thanh_Toan { get; set; }
+        public CheckoutViewModel() { Phuong_Thuc_Thanh_Toan = "COD"; }
     }
 }

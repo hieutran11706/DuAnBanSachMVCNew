@@ -196,6 +196,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\EnumerableExtensions.cs" />
     <Compile Include="Utilities\PasswordHasher.cs" />
+    <Compile Include="Utilities\PayOSHelper.cs" />
     <Compile Include="Utilities\VnPayLibrary.cs" />
     <Compile Include="ViewModels\CartItemViewModel.cs" />
     <Compile Include="ViewModels\CheckoutViewModel.cs" />
